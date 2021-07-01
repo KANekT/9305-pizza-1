@@ -1,32 +1,38 @@
 <template>
   <div id="app">
-    <div class="main">
-      <div class="main__wrapper">
-        <div class="main__header">
+    <header class="header">
+      <div class="header__logo">
+        <a href="index.html" class="logo">
           <img
-            src="@/assets/img/logo.svg"
-            width="300"
-            height="47"
-            alt="V!U!E! Pizza"
+            src="img/logo.svg"
+            alt="V!U!E! Pizza logo"
+            width="90"
+            height="40"
           />
-        </div>
-        <h1>Добро пожаловать!</h1>
-        <p>
-          Это проект V!U!E! Pizza для обучения на профессиональном
-          онлайн‑курсе<br />
-          <b>«Vue.js для опытных разработчиков».</b>
-        </p>
+        </a>
       </div>
-    </div>
+      <div class="header__cart">
+        <a href="cart.html">0 ₽</a>
+      </div>
+      <div class="header__user">
+        <a href="#" class="header__login"><span>Войти</span></a>
+      </div>
+    </header>
+    <IndexHome />
   </div>
 </template>
-
 <script>
+import IndexHome from "@/views/IndexHome";
+
 export default {
   name: "App",
+  components: {
+    IndexHome,
+  },
 };
 </script>
 
+// Импортируем глобальные стили для приложения
 <style lang="scss">
 @import "~@/assets/scss/app";
 </style>
