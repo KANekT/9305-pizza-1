@@ -161,6 +161,10 @@ import misc from "@/static/misc.json";
 import pizza from "@/static/pizza.json";
 import user from "@/static/user.json";
 
+import { pizzaSizesEnum } from "@/common/pizzaEnum.js";
+
+import { cloneDeep } from "lodash";
+
 export default {
   name: "IndexHome",
   data() {
@@ -168,34 +172,29 @@ export default {
       misc,
       pizza,
       user,
-      sizes: pizza.sizes.map((m) => {
-        switch (m.multiplier) {
-          case 1:
-            m.value = "small";
-            break;
-          case 2:
-            m.value = "normal";
-            break;
-          case 3:
-            m.value = "big";
-            break;
-          default:
-            m.value = "";
-            break;
-        }
+    };
+  },
+  computed: {
+    sizes() {
+      return cloneDeep(this.pizza.sizes).map((m) => {
+        m.value = pizzaSizesEnum[m.multiplier];
         return m;
-      }),
-      doughs: pizza.dough.map((m) => {
+      });
+    },
+    doughs() {
+      return cloneDeep(this.pizza.dough).map((m) => {
         m.value = m.image.substring(18);
         m.value = m.value.substring(0, m.value.length - 4);
         return m;
-      }),
-      ingredients: pizza.ingredients.map((m) => {
+      });
+    },
+    ingredients() {
+      return cloneDeep(this.pizza.ingredients).map((m) => {
         m.value = m.image.substring(20);
         m.value = m.value.substring(0, m.value.length - 4);
         return m;
-      }),
-    };
+      });
+    },
   },
 };
 </script>
