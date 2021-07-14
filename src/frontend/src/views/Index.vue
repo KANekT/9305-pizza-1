@@ -166,7 +166,7 @@ import { pizzaSizesEnum } from "@/common/pizzaEnum.js";
 import { cloneDeep } from "lodash";
 
 export default {
-  name: "IndexHome",
+  name: "Index",
   data() {
     return {
       misc,
@@ -176,23 +176,26 @@ export default {
   },
   computed: {
     sizes() {
-      return cloneDeep(this.pizza.sizes).map((m) => {
-        m.value = pizzaSizesEnum[m.multiplier];
-        return m;
+      return this.pizza.sizes.map((m) => {
+        let clItem = cloneDeep(m);
+        clItem.value = pizzaSizesEnum[clItem.multiplier];
+        return clItem;
       });
     },
     doughs() {
-      return cloneDeep(this.pizza.dough).map((m) => {
-        m.value = m.image.substring(18);
-        m.value = m.value.substring(0, m.value.length - 4);
-        return m;
+      return this.pizza.dough.map((m) => {
+        let clItem = cloneDeep(m);
+        clItem.value = clItem.image.substring(18);
+        clItem.value = clItem.value.substring(0, clItem.value.length - 4);
+        return clItem;
       });
     },
     ingredients() {
-      return cloneDeep(this.pizza.ingredients).map((m) => {
-        m.value = m.image.substring(20);
-        m.value = m.value.substring(0, m.value.length - 4);
-        return m;
+      return this.pizza.ingredients.map((m) => {
+        let clItem = cloneDeep(m);
+        clItem.value = clItem.image.substring(20);
+        clItem.value = clItem.value.substring(0, clItem.value.length - 4);
+        return clItem;
       });
     },
   },

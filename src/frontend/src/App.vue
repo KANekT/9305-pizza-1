@@ -18,16 +18,16 @@
         <a href="#" class="header__login"><span>Войти</span></a>
       </div>
     </header>
-    <IndexHome />
+    <Index />
   </div>
 </template>
 <script>
-import IndexHome from "@/views/IndexHome";
+import Index from "@/views/Index";
 
 export default {
   name: "App",
   components: {
-    IndexHome,
+    Index,
   },
 };
 </script>
