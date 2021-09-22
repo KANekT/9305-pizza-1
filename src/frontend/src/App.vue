@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-    <AppLayout />
-    <router-view />
+    <component :is="layout"> </component>
   </div>
 </template>
 <script>
-import AppLayout from "@/layouts/AppLayout";
+import { DEFAULT_LAYOUT } from "@/common/constants.js";
 
 export default {
   name: "App",
-  components: {
-    AppLayout,
+  computed: {
+    layout() {
+      const layout = this.$route.meta.layout || DEFAULT_LAYOUT;
+      return () => import(`@/layouts/${layout}.vue`);
+    },
   },
 };
 </script>
