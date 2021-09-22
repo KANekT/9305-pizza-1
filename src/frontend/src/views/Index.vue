@@ -161,7 +161,7 @@ import misc from "@/static/misc.json";
 import pizza from "@/static/pizza.json";
 import user from "@/static/user.json";
 
-import { pizzaSizesEnum } from "@/common/pizzaEnum.js";
+import { PIZZA_SIZES_ENUM } from "@/common/constants.js";
 
 import { cloneDeep } from "lodash";
 
@@ -178,7 +178,7 @@ export default {
     sizes() {
       return this.pizza.sizes.map((m) => {
         let clItem = cloneDeep(m);
-        clItem.value = pizzaSizesEnum[clItem.multiplier];
+        clItem.class = PIZZA_SIZES_ENUM[clItem.multiplier];
         return clItem;
       });
     },
