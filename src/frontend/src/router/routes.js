@@ -5,18 +5,29 @@ export default [
     component: () => import("@/views/Index.vue"),
     children: [
       {
-        path: "login",
+        path: "/login",
         name: "Login",
         component: () => import("@/views/Login.vue"),
-        meta: { layout: "AppLayoutWithoutHeader" },
       },
     ],
+  },
+  {
+    path: "/auth",
+    name: "Login",
+    component: () => import("@/views/Login.vue"),
+    meta: { layout: "AppLayoutWithoutHeader" },
   },
   {
     path: "/cart",
     name: "Cart",
     component: () => import("@/views/Cart.vue"),
-    meta: { layout: "AppLayoutWithoutHeader" },
+    children: [
+      {
+        path: "/order_placed",
+        name: "OrderPlaced",
+        component: () => import("@/views/OrderPlaced.vue"),
+      },
+    ],
   },
   {
     path: "/orders",

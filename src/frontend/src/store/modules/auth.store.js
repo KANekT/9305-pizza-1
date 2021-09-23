@@ -1,8 +1,8 @@
-import users from '@/static/users.json';
+import user from "@/static/user.json";
 
 export default {
   namespaced: true,
   state: {
-    user: users[0]
-  }
+    user: user,
+  },
 };

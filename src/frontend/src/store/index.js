@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import modules from "@/store/modules";
 import {
+  SET_DATA,
   SET_ENTITY,
   ADD_ENTITY,
   UPDATE_ENTITY,
@@ -17,11 +18,13 @@ const state = initState();
 const actions = {
   async init({ dispatch }) {
     dispatch("Builder/query");
-    dispatch("Cart/query");
   },
 };
 
 const mutations = {
+  [SET_DATA](state, { module, value }) {
+    module ? (state[module] = value) : (state = value);
+  },
   [SET_ENTITY](state, { module, entity, value }) {
     module ? (state[module][entity] = value) : (state[entity] = value);
   },

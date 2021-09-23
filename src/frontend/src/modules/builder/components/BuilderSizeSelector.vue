@@ -16,7 +16,7 @@
             :value="size.value"
             :checked="size.checked"
             class="visually-hidden"
-            @change="changeSize(index)"
+            @change="change(index)"
           />
           <span>{{ size.name }}</span>
         </label>
@@ -25,19 +25,18 @@
   </div>
 </template>
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
   name: "BuilderSizeSelector",
-  props: {
-    sizes: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
+  computed: {
+    ...mapState("Builder", ["sizes"]),
   },
   methods: {
-    changeSize(index) {
-      this.$emit("changeSize", index);
+    ...mapActions("Builder", ["changeSize"]),
+
+    async change(index) {
+      await this.changeSize(index);
     },
   },
 };
