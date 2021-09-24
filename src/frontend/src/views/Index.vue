@@ -31,25 +31,16 @@
   </main>
 </template>
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 //
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector.vue";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector.vue";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector.vue";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView.vue";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter.vue";
-// Импортируем JSON данные и статусы для фильтров.
-import misc from "@/static/misc.json";
-import user from "@/static/user.json";
 
 export default {
   name: "Index",
-  data() {
-    return {
-      misc,
-      user,
-    };
-  },
   components: {
     BuilderSizeSelector,
     BuilderDoughSelector,
@@ -65,18 +56,7 @@ export default {
     },
   },
   computed: {
-    ...mapState("Builder", [
-      "title",
-      "sizes",
-      "doughs",
-      "sauces",
-      "ingredients",
-    ]),
-    ...mapGetters("Builder", [
-      "pizzaFoundation",
-      "pizzaIngredients",
-      "ingredientsInPizza",
-    ]),
+    ...mapState("Builder", ["title"]),
   },
 };
 </script>

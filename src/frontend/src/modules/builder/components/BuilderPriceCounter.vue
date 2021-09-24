@@ -17,10 +17,13 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "BuilderPriceCounter",
   methods: {
-    ...mapActions("Builder", ["query"]),
+    ...mapActions("Builder", ["query", "pizza"]),
+    ...mapActions("Cart", ["add"]),
 
     async cookPizza() {
+      await this.add(await this.pizza());
       await this.query();
+      await this.$router.push("/cart");
     },
   },
   computed: {

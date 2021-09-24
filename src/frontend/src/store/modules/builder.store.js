@@ -1,5 +1,5 @@
 import { dough, ingredients, sauces, sizes } from "@/static/pizza.json";
-import { capitalize } from "@/common/helpers";
+import { capitalize, createID } from "@/common/helpers";
 import { cloneDeep } from "lodash";
 import {
   SET_DATA,
@@ -38,7 +38,7 @@ export default {
         );
       } else return "pizza--foundation--small-tomato";
     },
-    ingredients(state, getters) {
+    fillingCss(state, getters) {
       if (state.ingredients.length > 0) {
         return getters.ingredientsInPizza.map((m) => {
           let clItem = cloneDeep(m);
@@ -184,6 +184,47 @@ export default {
         items[i].checked = i === index;
       }
       commit(UPDATE_SAUCES, items);
+    },
+
+    pizza({ state, getters }) {
+      let sauce = state.sauces.find((f) => f.checked);
+      let dough = state.doughs.find((f) => f.checked);
+
+      function getDough(dough) {
+        switch (dough.value) {
+          case "light":
+            return {
+              id: dough.id,
+              name: "на тонком тесте",
+            };
+          case "large":
+            return {
+              id: dough.id,
+              name: "на толстом тесте",
+            };
+          default:
+            return {};
+        }
+      }
+
+      return {
+        id: createID(),
+        title: state.title,
+        ingredients: getters.ingredientsInPizza.map((m) => {
+          return {
+            id: m.id,
+            name: m.name.toLowerCase(),
+          };
+        }),
+        dough: getDough(dough),
+        sauce: {
+          id: sauce.id,
+          name: sauce.name.toLowerCase(),
+        },
+        size: state.sizes.find((f) => f.checked),
+        price: getters.price,
+        count: 1,
+      };
     },
   },
 

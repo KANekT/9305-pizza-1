@@ -18,6 +18,7 @@ const state = initState();
 const actions = {
   async init({ dispatch }) {
     dispatch("Builder/query");
+    dispatch("Cart/query");
   },
 };
 
@@ -51,6 +52,7 @@ const mutations = {
     }
   },
   [DELETE_ENTITY](state, { module, entity, id }) {
+    console.log(id);
     if (module) {
       state[module][entity] = state[module][entity].filter(
         (e) => +e.id !== +id

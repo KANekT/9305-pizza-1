@@ -20,14 +20,26 @@
           <input type="password" name="pass" placeholder="***********" />
         </label>
       </div>
-      <button type="submit" class="button">Авторизоваться</button>
+      <button type="button" class="button" @click="submit">
+        Авторизоваться
+      </button>
     </form>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Login",
+  methods: {
+    ...mapActions("Auth", ["logIn"]),
+
+    submit() {
+      this.logIn();
+      this.$router.push("/");
+    },
+  },
 };
 </script>
 

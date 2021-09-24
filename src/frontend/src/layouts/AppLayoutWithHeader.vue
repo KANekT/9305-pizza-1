@@ -12,14 +12,10 @@
         </router-link>
       </div>
       <div class="header__cart">
-        <router-link to="/cart">0 ₽</router-link>
+        <router-link to="/cart">{{ price }} ₽</router-link>
       </div>
       <div class="header__user">
-        <router-link
-          to="/login"
-          class="header__login"
-          v-if="!isAuth"
-          @click="logIn"
+        <router-link to="/login" class="header__login" v-if="!isAuth"
           ><span>Войти</span></router-link
         >
         <router-link to="/profile" v-if="isAuth">
@@ -41,12 +37,8 @@
           </picture>
           <span>Василий Ложкин</span>
         </router-link>
-        <router-link
-          to="/login"
-          class="header__logout"
-          v-if="isAuth"
-          @click="logOut"
-          ><span>Выйти</span></router-link
+        <a class="header__logout" v-if="isAuth" @click="logOut"
+          ><span>Выйти</span></a
         >
       </div>
     </header>
@@ -54,21 +46,16 @@
   </div>
 </template>
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   name: "AppLayoutWithHeader",
-  data() {
-    return {
-      isAuth: true,
-    };
+  computed: {
+    ...mapGetters("Auth", ["isAuth"]),
+    ...mapGetters("Cart", ["price"]),
   },
-  computed: {},
   methods: {
-    logIn() {
-      this.isAuth = true;
-    },
-    logOut() {
-      this.isAuth = false;
-    },
+    ...mapActions("Auth", ["logOut"]),
   },
 };
 </script>
