@@ -5,7 +5,6 @@ import { cloneDeep } from "lodash";
 import {
   SET_DATA,
   SET_ENTITY,
-  ADD_ENTITY,
   UPDATE_ENTITY,
   DELETE_ENTITY,
 } from "@/store/mutations-types";
@@ -101,7 +100,7 @@ export default {
     add({ commit }, pizza) {
       let item = cloneDeep(pizza);
       commit(
-        ADD_ENTITY,
+        UPDATE_ENTITY,
         {
           ...namespace,
           entity: "pizzas",

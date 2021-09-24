@@ -43,11 +43,15 @@ const mutations = {
       );
       if (~index) {
         state[module][entity].splice(index, 1, value);
+      } else {
+        state[module][entity] = [...state[module][entity], value];
       }
     } else {
       const index = state[entity].findIndex(({ id }) => id === value.id);
       if (~index) {
         state[entity].splice(index, 1, value);
+      } else {
+        state[entity] = [...state[entity], value];
       }
     }
   },

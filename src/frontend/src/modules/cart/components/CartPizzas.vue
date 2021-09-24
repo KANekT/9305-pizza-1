@@ -50,7 +50,9 @@
       </div>
 
       <div class="cart-list__button">
-        <button type="button" class="cart-list__edit">Изменить</button>
+        <button type="button" class="cart-list__edit" @click="edit(pizza)">
+          Изменить
+        </button>
         <button type="button" class="cart-list__edit" @click="remove(pizza)">
           Удалить
         </button>
@@ -68,10 +70,16 @@ export default {
     ...mapState("Cart", ["pizzas"]),
   },
   methods: {
+    ...mapActions("Builder", ["editPizza"]),
     ...mapActions("Cart", ["updatePizza", "deletePizza"]),
 
     async update(index, value) {
       await this.updatePizza({ index, value });
+    },
+
+    async edit(pizza) {
+      await this.editPizza(pizza);
+      await this.$router.push("/");
     },
 
     async remove(pizza) {

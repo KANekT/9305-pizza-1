@@ -18,8 +18,11 @@
       </main>
       <section class="footer">
         <div class="footer__more">
-          <router-link to="/" class="button button--border button--arrow"
-            >Хочу еще одну</router-link
+          <a
+            href="javascript:void(0);"
+            class="button button--border button--arrow"
+            @click="toBuilder"
+            >Хочу еще одну</a
           >
         </div>
         <p class="footer__text">
@@ -59,10 +62,16 @@ export default {
     ...mapGetters("Auth", ["isAuth"]),
   },
   methods: {
+    ...mapActions("Builder", ["clearPizza"]),
     ...mapActions("Cart", ["clear"]),
 
     async order() {
       await this.$router.push("/order_placed");
+    },
+
+    async toBuilder() {
+      await this.clearPizza();
+      await this.$router.push("/");
     },
   },
 };
