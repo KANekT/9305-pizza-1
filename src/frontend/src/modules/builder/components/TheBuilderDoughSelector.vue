@@ -29,7 +29,7 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
-  name: "BuilderDoughSelector",
+  name: "TheBuilderDoughSelector",
   computed: {
     ...mapState("Builder", ["doughs"]),
   },

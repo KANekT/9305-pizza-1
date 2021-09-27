@@ -25,8 +25,8 @@ export default {
     },
     price(state) {
       if (state.pizzas.length > 0) {
-        let pizzas = state.pizzas.map((m) => m.count * m.price);
-        let additionals = state.additionals.map((m) => m.count * m.price);
+        let pizzas = state.pizzas.map((it) => it.count * it.price);
+        let additionals = state.additionals.map((it) => it.count * it.price);
         return (
           pizzas.reduce((total, i) => total + i) +
           additionals.reduce((total, i) => total + i)
@@ -37,10 +37,10 @@ export default {
   },
 
   actions: {
-    query({ commit }) {
+    getAdditionals({ commit }) {
       // TODO: Add api call
-      const data = misc.map((m) => {
-        let clItem = cloneDeep(m);
+      const data = misc.map((it) => {
+        let clItem = cloneDeep(it);
         clItem.count = 0;
         clItem.src = require("./../../assets/img/" +
           clItem.image.substring(12));
@@ -57,7 +57,20 @@ export default {
       );
     },
 
-    updatePizza({ state, commit }, { index, value }) {
+    addPizza({ commit }, pizza) {
+      let item = cloneDeep(pizza);
+      commit(
+        UPDATE_ENTITY,
+        {
+          ...namespace,
+          entity: "pizzas",
+          value: item,
+        },
+        { root: true }
+      );
+    },
+
+    updatePizzaCount({ state, commit }, { index, value }) {
       let item = cloneDeep(state.pizzas[index]);
       item.count = item.count + value;
       commit(
@@ -83,7 +96,7 @@ export default {
       );
     },
 
-    updateAdditional({ state, commit }, { index, value }) {
+    updateAdditionalCount({ state, commit }, { index, value }) {
       let item = cloneDeep(state.additionals[index]);
       item.count = item.count + value;
       commit(
@@ -97,20 +110,7 @@ export default {
       );
     },
 
-    add({ commit }, pizza) {
-      let item = cloneDeep(pizza);
-      commit(
-        UPDATE_ENTITY,
-        {
-          ...namespace,
-          entity: "pizzas",
-          value: item,
-        },
-        { root: true }
-      );
-    },
-
-    clear({ commit }) {
+    clearData({ commit }) {
       commit(
         SET_DATA,
         {

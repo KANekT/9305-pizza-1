@@ -1,6 +1,6 @@
 <template>
   <div class="content__constructor">
-    <AppDrop @drop="add($event)">
+    <AppDrop @drop="add">
       <div class="pizza" :class="foundation">
         <div class="pizza__wrapper">
           <div
@@ -19,7 +19,7 @@ import { mapGetters, mapActions } from "vuex";
 import AppDrop from "@/common/components/AppDrop.vue";
 
 export default {
-  name: "BuilderPizzaView",
+  name: "TheBuilderPizzaView",
   components: { AppDrop },
   computed: {
     ...mapGetters("Builder", ["foundation", "fillings"]),

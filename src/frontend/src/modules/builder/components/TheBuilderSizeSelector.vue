@@ -28,7 +28,7 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
-  name: "BuilderSizeSelector",
+  name: "TheBuilderSizeSelector",
   computed: {
     ...mapState("Builder", ["sizes"]),
   },

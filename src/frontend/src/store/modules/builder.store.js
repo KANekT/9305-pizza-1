@@ -1,5 +1,10 @@
 import { dough, ingredients, sauces, sizes } from "@/static/pizza.json";
-import { capitalize, createID } from "@/common/helpers";
+import {
+  capitalize,
+  createID,
+  setCheckedByIndex,
+  setCheckedById,
+} from "@/common/helpers";
 import { cloneDeep } from "lodash";
 import {
   SET_DATA,
@@ -27,22 +32,29 @@ export default {
   },
 
   getters: {
-    foundation(state) {
-      if (state.doughs.length > 0 && state.sauces.length > 0) {
+    isFillState(state) {
+      return (
+        state.sizes.length > 0 &&
+        state.doughs.length > 0 &&
+        state.sauces.length > 0
+      );
+    },
+    foundation(state, getters) {
+      if (getters.isFillState) {
         return (
           "pizza--foundation--" +
-          (state.doughs.find((f) => f.checked).value === "light"
+          (state.doughs.find((it) => it.checked).value === "light"
             ? "small"
             : "big") +
           "-" +
-          (state.sauces.find((f) => f.checked).id === 1 ? "tomato" : "creamy")
+          (state.sauces.find((it) => it.checked).id === 1 ? "tomato" : "creamy")
         );
       } else return "pizza--foundation--small-tomato";
     },
     fillings(state, getters) {
-      if (state.ingredients.length > 0) {
-        return getters.ingredientsInPizza.map((m) => {
-          let clItem = cloneDeep(m);
+      if (getters.isFillState) {
+        return getters.ingredientsInPizza.map((it) => {
+          const clItem = cloneDeep(it);
           let css = "pizza__filling--" + clItem.value;
           switch (clItem.count) {
             case 2:
@@ -66,27 +78,21 @@ export default {
       return [];
     },
     ingredientsInPizza(state) {
-      return state.ingredients
-        .filter((f) => f.count > 0)
-        .map((m) => cloneDeep(m));
+      return state.ingredients.filter((it) => it.count > 0).map(cloneDeep);
     },
     price(state, getters) {
-      if (
-        state.sizes.length > 0 &&
-        state.doughs.length > 0 &&
-        state.sauces.length > 0
-      ) {
-        let multiplier = state.sizes.find((f) => f.checked).multiplier;
-        let dough = state.doughs.find((f) => f.checked).price;
-        let sauces = state.sauces.find((f) => f.checked).price;
-        let ingredients = getters.ingredientsInPizza.map(
-          (m) => m.count * m.price
+      if (getters.isFillState) {
+        const multiplier = state.sizes.find((it) => it.checked).multiplier;
+        const dough = state.doughs.find((it) => it.checked).price;
+        const sauce = state.sauces.find((it) => it.checked).price;
+        const ingredients = getters.ingredientsInPizza.map(
+          (it) => it.count * it.price
         );
         const sum =
           ingredients.length > 0
             ? ingredients.reduce((total, i) => total + i)
             : 0;
-        return multiplier * (dough + sauces + sum);
+        return multiplier * (dough + sauce + sum);
       }
       return 0;
     },
@@ -96,31 +102,31 @@ export default {
   },
 
   actions: {
-    query({ commit }) {
+    getAllData({ commit }) {
       // TODO: Add api call
       const data = {
         id: createID(),
         title: "",
-        sizes: sizes.map((m, i) => {
-          let clItem = cloneDeep(m);
+        sizes: sizes.map((it, i) => {
+          let clItem = cloneDeep(it);
           clItem.class = PIZZA_SIZES_ENUM[clItem.multiplier];
           clItem.checked = i === 0;
           return clItem;
         }),
-        doughs: dough.map((m, i) => {
-          let clItem = cloneDeep(m);
+        doughs: dough.map((it, i) => {
+          let clItem = cloneDeep(it);
           clItem.value = clItem.image.substring(18);
           clItem.value = clItem.value.substring(0, clItem.value.length - 4);
           clItem.checked = i === 0;
           return clItem;
         }),
-        sauces: sauces.map((m, i) => {
-          let clItem = cloneDeep(m);
+        sauces: sauces.map((it, i) => {
+          let clItem = cloneDeep(it);
           clItem.checked = i === 0;
           return clItem;
         }),
-        ingredients: ingredients.map((m) => {
-          let clItem = cloneDeep(m);
+        ingredients: ingredients.map((it) => {
+          let clItem = cloneDeep(it);
           clItem.value = clItem.image.substring(20);
           clItem.value = clItem.value.substring(0, clItem.value.length - 4);
           clItem.count = 0;
@@ -139,7 +145,7 @@ export default {
 
     addIngredient({ state, commit }, ingredient) {
       let item = cloneDeep(
-        state.ingredients.find((f) => f.id === ingredient.id)
+        state.ingredients.find((it) => it.id === ingredient.id)
       );
       if (item.count < 3) {
         item.count++;
@@ -178,23 +184,11 @@ export default {
       const data = {
         id: createID(),
         title: "",
-        sizes: state.sizes.map((m, i) => {
-          let clItem = cloneDeep(m);
-          clItem.checked = i === 0;
-          return clItem;
-        }),
-        doughs: state.doughs.map((m, i) => {
-          let clItem = cloneDeep(m);
-          clItem.checked = i === 0;
-          return clItem;
-        }),
-        sauces: state.sauces.map((m, i) => {
-          let clItem = cloneDeep(m);
-          clItem.checked = i === 0;
-          return clItem;
-        }),
-        ingredients: state.ingredients.map((m) => {
-          let clItem = cloneDeep(m);
+        sizes: setCheckedByIndex(cloneDeep(state.sizes, 0)),
+        doughs: setCheckedByIndex(cloneDeep(state.doughs, 0)),
+        sauces: setCheckedByIndex(cloneDeep(state.sauces, 0)),
+        ingredients: state.ingredients.map((it) => {
+          let clItem = cloneDeep(it);
           clItem.count = 0;
           return clItem;
         }),
@@ -211,30 +205,18 @@ export default {
     },
 
     editPizza({ commit, state }, pizza) {
-      console.log(pizza);
       // TODO: Add api call
       const data = {
         id: pizza.id,
         title: pizza.title,
-        sizes: state.sizes.map((m) => {
-          let clItem = cloneDeep(m);
-          clItem.checked = m.id === pizza.size.id;
-          return clItem;
-        }),
-        doughs: state.doughs.map((m) => {
-          let clItem = cloneDeep(m);
-          clItem.checked = m.id === pizza.dough.id;
-          return clItem;
-        }),
-        sauces: state.sauces.map((m) => {
-          let clItem = cloneDeep(m);
-          clItem.checked = m.id === pizza.sauce.id;
-          return clItem;
-        }),
-        ingredients: state.ingredients.map((m) => {
-          let ingredient = pizza.ingredients.find((f) => f.id === m.id);
-          let clItem = cloneDeep(m);
-          clItem.count = ingredient !== undefined ? ingredient.count : 0;
+        sizes: setCheckedById(cloneDeep(state.sizes, pizza.size.id)),
+        doughs: setCheckedById(cloneDeep(state.doughs, pizza.dough.id)),
+        sauces: setCheckedById(cloneDeep(state.sauces, pizza.sauce.id)),
+        ingredients: state.ingredients.map((ing) => {
+          let ingredient = pizza.ingredients.find((it) => it.id === ing.id);
+          let clItem = cloneDeep(ing);
+          clItem.count =
+            typeof ingredient !== "undefined" ? ingredient.count : 0;
           return clItem;
         }),
       };
@@ -250,32 +232,20 @@ export default {
     },
 
     changeDough({ state, commit }, index) {
-      let items = cloneDeep(state.doughs);
-      for (let i = 0; i < items.length; i++) {
-        items[i].checked = i === index;
-      }
-      commit(UPDATE_DOUGHS, items);
+      commit(UPDATE_DOUGHS, setCheckedByIndex(cloneDeep(state.doughs), index));
     },
 
     changeSize({ state, commit }, index) {
-      let items = cloneDeep(state.sizes);
-      for (let i = 0; i < items.length; i++) {
-        items[i].checked = i === index;
-      }
-      commit(UPDATE_SIZES, items);
+      commit(UPDATE_SIZES, setCheckedByIndex(cloneDeep(state.sizes), index));
     },
 
     changeSauce({ state, commit }, index) {
-      let items = cloneDeep(state.sauces);
-      for (let i = 0; i < items.length; i++) {
-        items[i].checked = i === index;
-      }
-      commit(UPDATE_SAUCES, items);
+      commit(UPDATE_SAUCES, setCheckedByIndex(cloneDeep(state.sauces), index));
     },
 
     pizza({ state, getters }) {
-      let sauce = state.sauces.find((f) => f.checked);
-      let dough = state.doughs.find((f) => f.checked);
+      const sauce = state.sauces.find((it) => it.checked);
+      const dough = state.doughs.find((it) => it.checked);
 
       function getDough(dough) {
         switch (dough.value) {
@@ -297,11 +267,11 @@ export default {
       return {
         id: state.id,
         title: state.title,
-        ingredients: getters.ingredientsInPizza.map((m) => {
+        ingredients: getters.ingredientsInPizza.map((it) => {
           return {
-            id: m.id,
-            name: m.name.toLowerCase(),
-            count: m.count,
+            id: it.id,
+            name: it.name.toLowerCase(),
+            count: it.count,
           };
         }),
         dough: getDough(dough),
@@ -309,7 +279,7 @@ export default {
           id: sauce.id,
           name: sauce.name.toLowerCase(),
         },
-        size: state.sizes.find((f) => f.checked),
+        size: state.sizes.find((it) => it.checked),
         price: getters.price,
         count: 1,
       };

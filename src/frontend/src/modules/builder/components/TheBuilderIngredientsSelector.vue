@@ -74,7 +74,7 @@ import AppDrag from "@/common/components/AppDrag.vue";
 import { mapActions, mapState } from "vuex";
 
 export default {
-  name: "BuilderIngredientsSelector",
+  name: "TheBuilderIngredientsSelector",
   components: { AppDrag },
   computed: {
     ...mapState("Builder", ["sauces", "ingredients"]),

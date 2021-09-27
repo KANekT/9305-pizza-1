@@ -1,12 +1,12 @@
 <template>
   <main class="content">
-    <form action="#" method="post">
+    <form v-on:submit.prevent="onSubmit">
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
 
-        <BuilderDoughSelector></BuilderDoughSelector>
-        <BuilderSizeSelector></BuilderSizeSelector>
-        <BuilderIngredientsSelector></BuilderIngredientsSelector>
+        <TheBuilderDoughSelector></TheBuilderDoughSelector>
+        <TheBuilderSizeSelector></TheBuilderSizeSelector>
+        <TheBuilderIngredientsSelector></TheBuilderIngredientsSelector>
 
         <div class="content__pizza">
           <label class="input">
@@ -21,9 +21,9 @@
             />
           </label>
 
-          <BuilderPizzaView></BuilderPizzaView>
+          <TheBuilderPizzaView></TheBuilderPizzaView>
 
-          <BuilderPriceCounter></BuilderPriceCounter>
+          <TheBuilderPriceCounter></TheBuilderPriceCounter>
         </div>
       </div>
     </form>
@@ -33,20 +33,20 @@
 <script>
 import { mapActions, mapState } from "vuex";
 //
-import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector.vue";
-import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector.vue";
-import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector.vue";
-import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView.vue";
-import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter.vue";
+import TheBuilderSizeSelector from "@/modules/builder/components/TheBuilderSizeSelector.vue";
+import TheBuilderDoughSelector from "@/modules/builder/components/TheBuilderDoughSelector.vue";
+import TheBuilderIngredientsSelector from "@/modules/builder/components/TheBuilderIngredientsSelector.vue";
+import TheBuilderPizzaView from "@/modules/builder/components/TheBuilderPizzaView.vue";
+import TheBuilderPriceCounter from "@/modules/builder/components/TheBuilderPriceCounter.vue";
 
 export default {
   name: "Index",
   components: {
-    BuilderSizeSelector,
-    BuilderDoughSelector,
-    BuilderIngredientsSelector,
-    BuilderPizzaView,
-    BuilderPriceCounter,
+    TheBuilderSizeSelector,
+    TheBuilderDoughSelector,
+    TheBuilderIngredientsSelector,
+    TheBuilderPizzaView,
+    TheBuilderPriceCounter,
   },
   methods: {
     ...mapActions("Builder", ["updateTitle"]),
@@ -54,6 +54,8 @@ export default {
     async change(title) {
       await this.updateTitle(title);
     },
+
+    async onSubmit() {},
   },
   computed: {
     ...mapState("Builder", ["title"]),

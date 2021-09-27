@@ -13,7 +13,7 @@ export default {
   },
   getters: {
     isAuth(state) {
-      return state.user !== undefined;
+      return typeof state.user !== "undefined";
     },
   },
   actions: {

@@ -53,7 +53,7 @@
 import { mapGetters, mapState } from "vuex";
 
 export default {
-  name: "CartOrderUser",
+  name: "TheCartOrderUser",
   data() {
     return {
       typeAddress: "1",

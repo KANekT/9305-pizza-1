@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form action="test.html" method="post" class="layout-form">
+    <form v-on:submit.prevent="onSubmit" class="layout-form">
       <main class="content cart">
         <div class="container">
           <div class="cart__title">
@@ -11,9 +11,9 @@
             <p>В корзине нет ни одного товара</p>
           </div>
 
-          <CartPizzas v-if="!isEmpty"></CartPizzas>
-          <CartAdditional v-if="!isEmpty"></CartAdditional>
-          <CartOrderUser v-if="!isEmpty"></CartOrderUser>
+          <TheCartPizzas v-if="!isEmpty"></TheCartPizzas>
+          <TheCartAdditional v-if="!isEmpty"></TheCartAdditional>
+          <TheCartOrderUser v-if="!isEmpty"></TheCartOrderUser>
         </div>
       </main>
       <section class="footer">
@@ -33,7 +33,7 @@
         </div>
 
         <div class="footer__submit">
-          <button type="button" class="button" @click="order">
+          <button type="submit" class="button" @click="onSubmit">
             Оформить заказ
           </button>
         </div>
@@ -46,16 +46,16 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 //
-import CartPizzas from "@/modules/cart/components/CartPizzas.vue";
-import CartAdditional from "@/modules/cart/components/CartAdditional.vue";
-import CartOrderUser from "@/modules/cart/components/CartOrderUser.vue";
+import TheCartPizzas from "@/modules/cart/components/TheCartPizzas.vue";
+import TheCartAdditional from "@/modules/cart/components/TheCartAdditional.vue";
+import TheCartOrderUser from "@/modules/cart/components/TheCartOrderUser.vue";
 
 export default {
   name: "Cart",
   components: {
-    CartPizzas,
-    CartAdditional,
-    CartOrderUser,
+    TheCartPizzas,
+    TheCartAdditional,
+    TheCartOrderUser,
   },
   computed: {
     ...mapGetters("Cart", ["isEmpty", "price"]),
@@ -65,7 +65,7 @@ export default {
     ...mapActions("Builder", ["clearPizza"]),
     ...mapActions("Cart", ["clear"]),
 
-    async order() {
+    async onSubmit() {
       await this.$router.push("/order_placed");
     },
 

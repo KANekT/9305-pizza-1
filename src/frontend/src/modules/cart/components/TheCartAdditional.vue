@@ -56,15 +56,15 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
-  name: "CartAdditional",
+  name: "TheCartAdditional",
   computed: {
     ...mapState("Cart", ["additionals"]),
   },
   methods: {
-    ...mapActions("Cart", ["updateAdditional"]),
+    ...mapActions("Cart", ["updateAdditionalCount"]),
 
     async update(index, value) {
-      await this.updateAdditional({ index, value });
+      await this.updateAdditionalCount({ index, value });
     },
   },
 };

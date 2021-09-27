@@ -6,7 +6,7 @@
     <div class="sign-form__title">
       <h1 class="title title--small">Авторизуйтесь на сайте</h1>
     </div>
-    <form action="test.html" method="post">
+    <form v-on:submit.prevent="onSubmit">
       <div class="sign-form__input">
         <label class="input">
           <span>E-mail</span>
@@ -20,7 +20,7 @@
           <input type="password" name="pass" placeholder="***********" />
         </label>
       </div>
-      <button type="button" class="button" @click="submit">
+      <button type="button" class="button" @click="onSubmit">
         Авторизоваться
       </button>
     </form>
@@ -35,9 +35,9 @@ export default {
   methods: {
     ...mapActions("Auth", ["logIn"]),
 
-    submit() {
-      this.logIn();
-      this.$router.push("/");
+    async onSubmit() {
+      await this.logIn();
+      await this.$router.push("/");
     },
   },
 };
