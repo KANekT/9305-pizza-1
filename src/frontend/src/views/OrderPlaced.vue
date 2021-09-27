@@ -22,13 +22,17 @@ export default {
   name: "Thanks",
   computed: {
     ...mapGetters("Auth", ["isAuth"]),
+
+    getUrl(){
+      return this.isAuth ? "/orders" : "/"
+    }
   },
   methods: {
     ...mapActions("Cart", ["clear"]),
 
     async order() {
       await this.clear();
-      await this.$router.push(this.isAuth ? "/orders" : "/");
+      await this.$router.push(this.getUrl);
     },
   },
 };
