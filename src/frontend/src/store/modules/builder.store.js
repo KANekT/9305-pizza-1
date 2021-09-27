@@ -39,18 +39,27 @@ export default {
         );
       } else return "pizza--foundation--small-tomato";
     },
-    fillingCss(state, getters) {
+    fillings(state, getters) {
       if (state.ingredients.length > 0) {
         return getters.ingredientsInPizza.map((m) => {
           let clItem = cloneDeep(m);
           let css = "pizza__filling--" + clItem.value;
           switch (clItem.count) {
             case 2:
-              return css + " pizza__filling--second";
+              return {
+                id: 2,
+                css: css + " pizza__filling--second",
+              };
             case 3:
-              return css + " pizza__filling--third";
+              return {
+                id: 3,
+                css: css + " pizza__filling--third",
+              };
             default:
-              return css;
+              return {
+                id: 1,
+                css: css,
+              };
           }
         });
       }

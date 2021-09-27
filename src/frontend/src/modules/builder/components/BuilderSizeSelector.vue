@@ -8,7 +8,7 @@
           class="diameter__input"
           :class="`diameter__input--${size.class}`"
           v-for="(size, index) in sizes"
-          :key="index"
+          :key="size.id"
         >
           <input
             type="radio"

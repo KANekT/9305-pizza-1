@@ -8,7 +8,7 @@
           class="dough__input"
           :class="`dough__input--${dough.value}`"
           v-for="(dough, index) in doughs"
-          :key="index"
+          :key="dough.id"
         >
           <input
             type="radio"

@@ -5,9 +5,9 @@
         <div class="pizza__wrapper">
           <div
             class="pizza__filling"
-            :class="css"
-            v-for="(css, index) in fillingCss"
-            :key="index"
+            :class="filling.css"
+            v-for="filling in fillings"
+            :key="filling.id"
           ></div>
         </div></div
     ></AppDrop>
@@ -22,7 +22,7 @@ export default {
   name: "BuilderPizzaView",
   components: { AppDrop },
   computed: {
-    ...mapGetters("Builder", ["foundation", "fillingCss"]),
+    ...mapGetters("Builder", ["foundation", "fillings"]),
   },
   methods: {
     ...mapActions("Builder", ["addIngredient"]),

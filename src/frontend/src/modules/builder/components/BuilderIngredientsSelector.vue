@@ -10,7 +10,7 @@
           <label
             class="radio ingredients__input"
             v-for="(sauce, index) in sauces"
-            :key="index"
+            :key="sauce.id"
           >
             <input
               type="radio"
@@ -30,7 +30,7 @@
             <li
               class="ingredients__item"
               v-for="(ingredient, index) in ingredients"
-              :key="index"
+              :key="ingredient.id"
             >
               <AppDrag :transferData="ingredient">
                 <span class="filling" :class="`filling--${ingredient.value}`">{{

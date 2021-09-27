@@ -1,6 +1,10 @@
 <template>
   <ul class="cart-list sheet">
-    <li class="cart-list__item" v-for="(pizza, index) in pizzas" :key="index">
+    <li
+      class="cart-list__item"
+      v-for="(pizza, index) in pizzas"
+      :key="pizza.id"
+    >
       <div class="product cart-list__product">
         <img
           src="@/assets/img/product.svg"

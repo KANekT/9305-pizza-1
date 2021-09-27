@@ -4,7 +4,7 @@
       <li
         class="additional-list__item sheet"
         v-for="(additional, index) in additionals"
-        :key="index"
+        :key="additional.id"
       >
         <p class="additional-list__description">
           <img
