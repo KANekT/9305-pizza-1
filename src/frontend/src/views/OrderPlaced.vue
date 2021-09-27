@@ -1,6 +1,6 @@
 <template>
   <div class="popup">
-    <a href="javascript:void(0);" class="close" @click="order">
+    <a class="close" v-on:click.prevent.self="order">
       <span class="visually-hidden">Закрыть попап</span>
     </a>
     <div class="popup__title">
@@ -8,9 +8,7 @@
     </div>
     <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
     <div class="popup__button">
-      <a href="javascript:void(0);" class="button" @click="order"
-        >Отлично, я жду!</a
-      >
+      <a class="button" v-on:click.prevent.self="order">Отлично, я жду!</a>
     </div>
   </div>
 </template>
@@ -23,9 +21,9 @@ export default {
   computed: {
     ...mapGetters("Auth", ["isAuth"]),
 
-    getUrl(){
-      return this.isAuth ? "/orders" : "/"
-    }
+    getUrl() {
+      return this.isAuth ? "/orders" : "/";
+    },
   },
   methods: {
     ...mapActions("Cart", ["clear"]),

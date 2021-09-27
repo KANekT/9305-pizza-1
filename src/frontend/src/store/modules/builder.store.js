@@ -41,14 +41,14 @@ export default {
     },
     foundation(state, getters) {
       if (getters.isFillState) {
-        return (
-          "pizza--foundation--" +
-          (state.doughs.find((it) => it.checked).value === "light"
+        const cssDough =
+          state.doughs.find((it) => it.checked).value === "light"
             ? "small"
-            : "big") +
-          "-" +
-          (state.sauces.find((it) => it.checked).id === 1 ? "tomato" : "creamy")
-        );
+            : "big";
+        const cssSauce =
+          state.sauces.find((it) => it.checked).id === 1 ? "tomato" : "creamy";
+
+        return `pizza--foundation--${cssDough}-${cssSauce}`;
       } else return "pizza--foundation--small-tomato";
     },
     fillings(state, getters) {
