@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form v-on:submit.prevent="onSubmit" class="layout-form">
+    <form @submit.prevent="onSubmit" class="layout-form">
       <main class="content cart">
         <div class="container">
           <div class="cart__title">
@@ -11,16 +11,16 @@
             <p>В корзине нет ни одного товара</p>
           </div>
 
-          <TheCartPizzas v-if="!isEmpty"></TheCartPizzas>
-          <TheCartAdditional v-if="!isEmpty"></TheCartAdditional>
-          <TheCartOrderUser v-if="!isEmpty"></TheCartOrderUser>
+          <TheCartPizzas v-if="!isEmpty" />
+          <TheCartAdditional v-if="!isEmpty" />
+          <TheCartOrderUser v-if="!isEmpty" />
         </div>
       </main>
       <section class="footer">
         <div class="footer__more">
           <a
             class="button button--border button--arrow"
-            v-on:click.prevent.self="toBuilder"
+            @click.prevent.self="toBuilder"
             >Хочу еще одну</a
           >
         </div>
@@ -32,9 +32,7 @@
         </div>
 
         <div class="footer__submit">
-          <button type="submit" class="button" @click="onSubmit">
-            Оформить заказ
-          </button>
+          <button type="submit" class="button">Оформить заказ</button>
         </div>
       </section>
     </form>

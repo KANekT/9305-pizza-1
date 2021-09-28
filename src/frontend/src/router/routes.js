@@ -16,7 +16,7 @@ export default [
   {
     path: "/auth",
     name: "Login",
-    component: getView("Login.vue"),
+    component: getView("Login"),
     meta: { layout: "AppLayoutWithoutHeader" },
   },
   {

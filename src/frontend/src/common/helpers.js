@@ -1,3 +1,5 @@
+import { cloneDeep } from "lodash";
+
 export const capitalize = (string) =>
   `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
 
@@ -18,15 +20,17 @@ export function getView(view) {
 }
 
 export function setCheckedByIndex(items, index) {
-  items.forEach((e, i) => {
+  const clItems = cloneDeep(items);
+  clItems.forEach((e, i) => {
     e.checked = i === index;
   });
-  return items;
+  return clItems;
 }
 
 export function setCheckedById(items, id) {
-  items.forEach((e) => {
+  const clItems = cloneDeep(items);
+  clItems.forEach((e) => {
     e.checked = e.id === id;
   });
-  return items;
+  return clItems;
 }

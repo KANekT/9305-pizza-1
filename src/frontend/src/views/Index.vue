@@ -1,12 +1,12 @@
 <template>
   <main class="content">
-    <form v-on:submit.prevent="onSubmit">
+    <form @submit.prevent="onSubmit">
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
 
-        <TheBuilderDoughSelector></TheBuilderDoughSelector>
-        <TheBuilderSizeSelector></TheBuilderSizeSelector>
-        <TheBuilderIngredientsSelector></TheBuilderIngredientsSelector>
+        <TheBuilderDoughSelector />
+        <TheBuilderSizeSelector />
+        <TheBuilderIngredientsSelector />
 
         <div class="content__pizza">
           <label class="input">
@@ -21,9 +21,9 @@
             />
           </label>
 
-          <TheBuilderPizzaView></TheBuilderPizzaView>
+          <TheBuilderPizzaView />
 
-          <TheBuilderPriceCounter></TheBuilderPriceCounter>
+          <TheBuilderPriceCounter />
         </div>
       </div>
     </form>
