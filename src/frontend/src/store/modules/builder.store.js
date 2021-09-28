@@ -184,9 +184,9 @@ export default {
       const data = {
         id: createID(),
         title: "",
-        sizes: setCheckedByIndex(cloneDeep(state.sizes, 0)),
-        doughs: setCheckedByIndex(cloneDeep(state.doughs, 0)),
-        sauces: setCheckedByIndex(cloneDeep(state.sauces, 0)),
+        sizes: setCheckedByIndex(cloneDeep(state.sizes), 0),
+        doughs: setCheckedByIndex(cloneDeep(state.doughs), 0),
+        sauces: setCheckedByIndex(cloneDeep(state.sauces), 0),
         ingredients: state.ingredients.map((it) => {
           let clItem = cloneDeep(it);
           clItem.count = 0;

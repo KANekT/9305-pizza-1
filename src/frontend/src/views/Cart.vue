@@ -19,9 +19,8 @@
       <section class="footer">
         <div class="footer__more">
           <a
-            href="javascript:void(0);"
             class="button button--border button--arrow"
-            @click="toBuilder"
+            v-on:click.prevent.self="toBuilder"
             >Хочу еще одну</a
           >
         </div>
