@@ -8,7 +8,7 @@
           class="diameter__input"
           :class="`diameter__input--${size.class}`"
           v-for="(size, index) in sizes"
-          :key="index"
+          :key="size.id"
         >
           <input
             type="radio"
@@ -16,7 +16,7 @@
             :value="size.value"
             :checked="size.checked"
             class="visually-hidden"
-            @change="changeSize(index)"
+            @change="change(index)"
           />
           <span>{{ size.name }}</span>
         </label>
@@ -25,19 +25,18 @@
   </div>
 </template>
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
-  name: "BuilderSizeSelector",
-  props: {
-    sizes: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
+  name: "TheBuilderSizeSelector",
+  computed: {
+    ...mapState("Builder", ["sizes"]),
   },
   methods: {
-    changeSize(index) {
-      this.$emit("changeSize", index);
+    ...mapActions("Builder", ["changeSize"]),
+
+    async change(index) {
+      await this.changeSize(index);
     },
   },
 };

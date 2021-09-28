@@ -8,6 +8,10 @@ import { DEFAULT_LAYOUT } from "@/common/constants.js";
 
 export default {
   name: "App",
+  created() {
+    // Note: fetch initial data
+    this.$store.dispatch("init");
+  },
   computed: {
     layout() {
       const layout = this.$route.meta.layout || DEFAULT_LAYOUT;

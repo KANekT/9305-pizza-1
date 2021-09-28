@@ -8,7 +8,7 @@
           class="dough__input"
           :class="`dough__input--${dough.value}`"
           v-for="(dough, index) in doughs"
-          :key="index"
+          :key="dough.id"
         >
           <input
             type="radio"
@@ -16,7 +16,7 @@
             :value="dough.value"
             :checked="dough.checked"
             class="visually-hidden"
-            @change="changeDough(index)"
+            @change="change(index)"
           />
           <b>{{ dough.name }}</b>
           <span>{{ dough.description }}</span>
@@ -26,19 +26,18 @@
   </div>
 </template>
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
-  name: "BuilderDoughSelector",
-  props: {
-    doughs: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
+  name: "TheBuilderDoughSelector",
+  computed: {
+    ...mapState("Builder", ["doughs"]),
   },
   methods: {
-    changeDough(index) {
-      this.$emit("changeDough", index);
+    ...mapActions("Builder", ["changeDough"]),
+
+    async change(index) {
+      await this.changeDough(index);
     },
   },
 };

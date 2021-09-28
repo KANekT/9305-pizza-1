@@ -10,14 +10,14 @@
           <label
             class="radio ingredients__input"
             v-for="(sauce, index) in sauces"
-            :key="index"
+            :key="sauce.id"
           >
             <input
               type="radio"
               name="sauce"
               :value="index"
               :checked="sauce.checked"
-              @change="changeSauce(index)"
+              @change="change(index)"
             />
             <span>{{ sauce.name }}</span>
           </label>
@@ -30,7 +30,7 @@
             <li
               class="ingredients__item"
               v-for="(ingredient, index) in ingredients"
-              :key="index"
+              :key="ingredient.id"
             >
               <AppDrag :transferData="ingredient">
                 <span class="filling" :class="`filling--${ingredient.value}`">{{
@@ -43,7 +43,7 @@
                   type="button"
                   class="counter__button counter__button--minus"
                   :disabled="ingredient.count <= 0"
-                  @click="updateIngredients(index, -1)"
+                  @click="update(index, -1)"
                 >
                   <span class="visually-hidden">Меньше</span>
                 </button>
@@ -57,7 +57,7 @@
                   type="button"
                   class="counter__button counter__button--plus"
                   :disabled="ingredient.count >= 3"
-                  @click="updateIngredients(index, 1)"
+                  @click="update(index, 1)"
                 >
                   <span class="visually-hidden">Больше</span>
                 </button>
@@ -71,30 +71,23 @@
 </template>
 <script>
 import AppDrag from "@/common/components/AppDrag.vue";
+import { mapActions, mapState } from "vuex";
 
 export default {
-  name: "BuilderIngredientsSelector",
-  props: {
-    sauces: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-    ingredients: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-  },
+  name: "TheBuilderIngredientsSelector",
   components: { AppDrag },
+  computed: {
+    ...mapState("Builder", ["sauces", "ingredients"]),
+  },
   methods: {
-    changeSauce(index) {
-      this.$emit("changeSauce", index);
+    ...mapActions("Builder", ["changeSauce", "updateIngredient"]),
+
+    async update(index, value) {
+      await this.updateIngredient({ index, value });
     },
-    updateIngredients(index, value) {
-      this.$emit("updateIngredients", index, value);
+
+    async change(index) {
+      await this.changeSauce(index);
     },
   },
 };
