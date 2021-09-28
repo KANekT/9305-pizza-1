@@ -7,3 +7,10 @@ export const PIZZA_SIZES_ENUM = {
   2: "normal",
   3: "big",
 };
+
+export const NOTIFICATION_TYPES = {
+  INFO: "info",
+  SUCCESS: "success",
+  ERROR: "error",
+  WARNING: "warning",
+};
