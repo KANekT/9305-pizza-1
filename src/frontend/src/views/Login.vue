@@ -6,7 +6,7 @@
     <div class="sign-form__title">
       <h1 class="title title--small">Авторизуйтесь на сайте</h1>
     </div>
-    <form v-on:submit.prevent="onSubmit">
+    <form @submit.prevent="onSubmit">
       <div class="sign-form__input">
         <label class="input">
           <span>E-mail</span>
@@ -20,9 +20,7 @@
           <input type="password" name="pass" placeholder="***********" />
         </label>
       </div>
-      <button type="button" class="button" @click="onSubmit">
-        Авторизоваться
-      </button>
+      <button type="submit" class="button">Авторизоваться</button>
     </form>
   </div>
 </template>

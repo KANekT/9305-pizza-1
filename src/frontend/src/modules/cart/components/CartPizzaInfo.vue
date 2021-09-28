@@ -66,10 +66,12 @@ export default {
     index: {
       type: Number,
       required: true,
+      default: 0,
     },
     pizza: {
       type: Object,
       required: true,
+      default: () => ({}),
     },
   },
   computed: {

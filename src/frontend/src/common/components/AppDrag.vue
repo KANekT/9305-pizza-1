@@ -18,6 +18,7 @@ export default {
     transferData: {
       type: Object,
       required: true,
+      default: () => ({}),
     },
   },
   computed: {

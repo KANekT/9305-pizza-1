@@ -1,6 +1,6 @@
 <template>
   <div class="popup">
-    <a class="close" v-on:click.prevent.self="order">
+    <a class="close" @click.prevent.self="order">
       <span class="visually-hidden">Закрыть попап</span>
     </a>
     <div class="popup__title">
@@ -8,7 +8,7 @@
     </div>
     <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
     <div class="popup__button">
-      <a class="button" v-on:click.prevent.self="order">Отлично, я жду!</a>
+      <a class="button" @click.prevent.self="order">Отлично, я жду!</a>
     </div>
   </div>
 </template>

@@ -23,10 +23,13 @@ export default {
     isEmpty(state) {
       return state.pizzas.length === 0;
     },
-    price(state) {
-      if (state.pizzas.length > 0) {
-        let pizzas = state.pizzas.map((it) => it.count * it.price);
-        let additionals = state.additionals.map((it) => it.count * it.price);
+    isNotEmpty(state) {
+      return state.pizzas.length > 0;
+    },
+    price(state, getters) {
+      if (getters.isNotEmpty) {
+        const pizzas = state.pizzas.map((it) => it.count * it.price);
+        const additionals = state.additionals.map((it) => it.count * it.price);
         return (
           pizzas.reduce((total, i) => total + i) +
           additionals.reduce((total, i) => total + i)
@@ -58,7 +61,7 @@ export default {
     },
 
     addPizza({ commit }, pizza) {
-      let item = cloneDeep(pizza);
+      const item = cloneDeep(pizza);
       commit(
         UPDATE_ENTITY,
         {
@@ -71,14 +74,14 @@ export default {
     },
 
     updatePizzaCount({ state, commit }, { index, value }) {
-      let item = cloneDeep(state.pizzas[index]);
-      item.count = item.count + value;
+      let clItem = cloneDeep(state.pizzas[index]);
+      clItem.count = clItem.count + value;
       commit(
         UPDATE_ENTITY,
         {
           ...namespace,
           entity: "pizzas",
-          value: item,
+          value: clItem,
         },
         { root: true }
       );
@@ -97,14 +100,14 @@ export default {
     },
 
     updateAdditionalCount({ state, commit }, { index, value }) {
-      let item = cloneDeep(state.additionals[index]);
-      item.count = item.count + value;
+      let clItem = cloneDeep(state.additionals[index]);
+      clItem.count = clItem.count + value;
       commit(
         UPDATE_ENTITY,
         {
           ...namespace,
           entity: "additionals",
-          value: item,
+          value: clItem,
         },
         { root: true }
       );

@@ -54,9 +54,8 @@ export default {
     fillings(state, getters) {
       if (getters.isFillState) {
         return getters.ingredientsInPizza.map((it) => {
-          const clItem = cloneDeep(it);
-          let css = "pizza__filling--" + clItem.value;
-          switch (clItem.count) {
+          const css = "pizza__filling--" + it.value;
+          switch (it.count) {
             case 2:
               return {
                 id: 2,
@@ -184,9 +183,9 @@ export default {
       const data = {
         id: createID(),
         title: "",
-        sizes: setCheckedByIndex(cloneDeep(state.sizes), 0),
-        doughs: setCheckedByIndex(cloneDeep(state.doughs), 0),
-        sauces: setCheckedByIndex(cloneDeep(state.sauces), 0),
+        sizes: setCheckedByIndex(state.sizes, 0),
+        doughs: setCheckedByIndex(state.doughs, 0),
+        sauces: setCheckedByIndex(state.sauces, 0),
         ingredients: state.ingredients.map((it) => {
           let clItem = cloneDeep(it);
           clItem.count = 0;
@@ -209,12 +208,12 @@ export default {
       const data = {
         id: pizza.id,
         title: pizza.title,
-        sizes: setCheckedById(cloneDeep(state.sizes, pizza.size.id)),
-        doughs: setCheckedById(cloneDeep(state.doughs, pizza.dough.id)),
-        sauces: setCheckedById(cloneDeep(state.sauces, pizza.sauce.id)),
+        sizes: setCheckedById(state.sizes, pizza.size.id),
+        doughs: setCheckedById(state.doughs, pizza.dough.id),
+        sauces: setCheckedById(state.sauces, pizza.sauce.id),
         ingredients: state.ingredients.map((ing) => {
-          let ingredient = pizza.ingredients.find((it) => it.id === ing.id);
           let clItem = cloneDeep(ing);
+          const ingredient = pizza.ingredients.find((it) => it.id === ing.id);
           clItem.count =
             typeof ingredient !== "undefined" ? ingredient.count : 0;
           return clItem;
@@ -232,15 +231,15 @@ export default {
     },
 
     changeDough({ state, commit }, index) {
-      commit(UPDATE_DOUGHS, setCheckedByIndex(cloneDeep(state.doughs), index));
+      commit(UPDATE_DOUGHS, setCheckedByIndex(state.doughs, index));
     },
 
     changeSize({ state, commit }, index) {
-      commit(UPDATE_SIZES, setCheckedByIndex(cloneDeep(state.sizes), index));
+      commit(UPDATE_SIZES, setCheckedByIndex(state.sizes, index));
     },
 
     changeSauce({ state, commit }, index) {
-      commit(UPDATE_SAUCES, setCheckedByIndex(cloneDeep(state.sauces), index));
+      commit(UPDATE_SAUCES, setCheckedByIndex(state.sauces, index));
     },
 
     pizza({ state, getters }) {
