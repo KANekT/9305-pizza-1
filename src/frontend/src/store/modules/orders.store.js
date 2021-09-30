@@ -7,7 +7,7 @@ import {
   DELETE_ENTITY,
 } from "@/store/mutations-types";
 
-const entity = "order";
+const entity = "orders";
 const module = capitalize(entity);
 const namespace = { entity, module };
 
@@ -18,8 +18,9 @@ export default {
   },
   actions: {
     async getOrders({ commit }) {
-      const misc = await this.$api.orders.query();
-      const data = misc.map((it) => cloneDeep(it));
+      const orders = await this.$api.orders.query();
+      const data = orders.map((it) => cloneDeep(it));
+
       commit(
         SET_ENTITY,
         {
@@ -60,7 +61,8 @@ export default {
       );
     },
 
-    deleteOrder({ commit }, id) {
+    async deleteOrder({ commit }, id) {
+      await this.$api.orders.delete(id);
       commit(
         DELETE_ENTITY,
         {
