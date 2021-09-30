@@ -7,6 +7,7 @@
       :name="name"
       :placeholder="placeholder"
       :required="required"
+      :readonly="readonly"
       @input="$emit('input', $event.target.value)"
     />
     <span v-if="showError" class="text-field__text">
@@ -44,6 +45,10 @@ export default {
       default: "",
     },
     required: {
+      type: Boolean,
+      default: false,
+    },
+    readonly: {
       type: Boolean,
       default: false,
     },

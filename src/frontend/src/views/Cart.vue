@@ -13,7 +13,7 @@
 
           <TheCartPizzas v-if="!isEmpty" />
           <TheCartAdditional v-if="!isEmpty" />
-          <TheCartOrderUser v-if="!isEmpty" />
+          <TheCartOrderUser v-if="!isEmpty" @isValid="isValid" />
         </div>
       </main>
       <section class="footer">
@@ -32,7 +32,9 @@
         </div>
 
         <div class="footer__submit">
-          <button type="submit" class="button">Оформить заказ</button>
+          <button type="submit" class="button" :disabled="isValid">
+            Оформить заказ
+          </button>
         </div>
       </section>
     </form>
@@ -41,7 +43,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 //
 import TheCartPizzas from "@/modules/cart/components/TheCartPizzas.vue";
 import TheCartAdditional from "@/modules/cart/components/TheCartAdditional.vue";
@@ -49,20 +51,69 @@ import TheCartOrderUser from "@/modules/cart/components/TheCartOrderUser.vue";
 
 export default {
   name: "Cart",
+  data() {
+    return {
+      isValid: false,
+    };
+  },
   components: {
     TheCartPizzas,
     TheCartAdditional,
     TheCartOrderUser,
   },
+  async created() {
+    if (this.isAuth) {
+      await this.getAddresses();
+    }
+  },
   computed: {
     ...mapGetters("Cart", ["isEmpty", "price"]),
     ...mapGetters("Auth", ["isAuth"]),
+    ...mapState("Auth", ["user"]),
+    ...mapState("Cart", ["pizzas", "additionals"]),
   },
   methods: {
     ...mapActions("Builder", ["clearPizza"]),
-    ...mapActions("Cart", ["clear"]),
+    ...mapActions("Cart", ["clearData"]),
+    ...mapActions("Address", ["getAddresses"]),
+    ...mapActions("Orders", ["addOrder"]),
 
     async onSubmit() {
+      const order = {
+        userId: this.isAuth ? this.user.id : null,
+        phone: "",
+        address: {
+          street: "string",
+          building: "string",
+          flat: "string",
+          comment: "string",
+        },
+        pizzas: this.pizzas.map((it) => {
+          return {
+            name: it.title,
+            sauceId: it.sauce.id,
+            doughId: it.dough.id,
+            sizeId: it.size.id,
+            quantity: it.count,
+            ingredients: it.ingredients.map((ing) => {
+              return {
+                ingredientId: ing.id,
+                quantity: ing.count,
+              };
+            }),
+          };
+        }),
+        misc: this.additionals
+          .filter((it) => it.count > 0)
+          .map((it) => {
+            return {
+              miscId: it.id,
+              quantity: it.count,
+            };
+          }),
+      };
+
+      await this.addOrder(order);
       await this.$router.push("/order_placed");
     },
 

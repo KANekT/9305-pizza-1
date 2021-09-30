@@ -31,8 +31,11 @@ export default {
       );
     },
 
-    addOrder({ commit }, order) {
+    async addOrder({ commit }, order) {
       const item = cloneDeep(order);
+
+      const entity = await this.$api.orders.post(item);
+      item.id = entity.id;
       commit(
         ADD_ENTITY,
         {
