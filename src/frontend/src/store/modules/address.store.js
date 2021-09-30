@@ -36,7 +36,7 @@ export default {
       );
     },
 
-    async addAddress({ commit, rootState }, { address, index }) {
+    async editAddress({ commit, rootState }, { address, index }) {
       let item = null;
       const user = rootState.Auth.user;
       if (typeof address === "undefined") {
@@ -52,11 +52,15 @@ export default {
         };
       } else {
         item = cloneDeep(address);
+        item.userId = typeof user !== "undefined" ? user.id : null;
         try {
           if (item.id !== null) {
-            item = await this.$api.addresses.put(item);
+            await this.$api.addresses.put(item);
+            item.isCollapsed = true;
           } else {
-            item = await this.$api.addresses.post(item);
+            const entity = await this.$api.addresses.post(item);
+            item.id = entity.id;
+            item.isCollapsed = true;
           }
         } catch (e) {
           //console.log("error in addAddress");
@@ -72,37 +76,23 @@ export default {
             index: index,
             value: item,
           },
-
           { root: true }
         );
       } else {
         commit(
-          ADD_ENTITY,
+          item.id !== null ? UPDATE_ENTITY : ADD_ENTITY,
           {
             ...namespace,
             entity: "address",
             value: item,
           },
-
           { root: true }
         );
       }
     },
 
-    editAddress({ commit }, address) {
-      const item = cloneDeep(address);
-      commit(
-        UPDATE_ENTITY,
-        {
-          ...namespace,
-          entity: "address",
-          value: item,
-        },
-        { root: true }
-      );
-    },
-
-    deleteAddress({ commit }, id) {
+    async deleteAddress({ commit }, id) {
+      await this.$api.addresses.delete(id);
       commit(
         DELETE_ENTITY,
         {

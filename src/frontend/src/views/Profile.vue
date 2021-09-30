@@ -49,10 +49,10 @@ export default {
     ...mapState("Address", ["address"]),
   },
   methods: {
-    ...mapActions("Address", ["getAddresses", "addAddress"]),
+    ...mapActions("Address", ["getAddresses", "editAddress"]),
 
     async add() {
-      await this.addAddress({});
+      await this.editAddress({});
     },
   },
 };

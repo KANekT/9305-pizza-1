@@ -4,15 +4,13 @@
       <div class="address-form__header">
         <b>Адрес №{{ address.id }}. {{ address.name }}</b>
         <div class="address-form__edit">
-          <button type="button" class="icon">
+          <button type="button" class="icon" @click="edit">
             <span class="visually-hidden">Изменить адрес</span>
           </button>
         </div>
       </div>
-      <p>
-        {{ address.street }}, д. {{ address.building }}, кв. {{ address.flat }}
-      </p>
-      <small>{{ address.comment }}</small>
+      <p>{{ address.street }}, д. {{ address.building }}{{ flatText }}</p>
+      <small v-if="!isEmptyComment">{{ address.comment }}</small>
     </div>
     <form
       @submit.prevent="onSubmit"
@@ -95,7 +93,11 @@
       </div>
 
       <div class="address-form__buttons">
-        <button type="button" class="button button--transparent">
+        <button
+          type="button"
+          class="button button--transparent"
+          @click="remove"
+        >
           Удалить
         </button>
         <button type="submit" class="button">Сохранить</button>
@@ -156,8 +158,34 @@ export default {
       this.$clearValidationErrors();
     },
   },
+  computed: {
+    flatText() {
+      return this.address.flat.length > 0 ? `, кв. ${this.address.flat}` : "";
+    },
+    isEmptyComment() {
+      return this.address.comment.length === 0;
+    },
+  },
   methods: {
-    ...mapActions("Address", ["addAddress"]),
+    ...mapActions("Address", ["editAddress", "deleteAddress"]),
+
+    edit() {
+      this.address.isCollapsed = false;
+      this.$data.id = this.address.id;
+      this.$data.name = this.address.name;
+      this.$data.street = this.address.street;
+      this.$data.building = this.address.building;
+      this.$data.flat = this.address.flat;
+      this.$data.comment = this.address.comment;
+    },
+
+    async remove() {
+      if (
+        confirm(`Вы действительно хотите удалить адрес ${this.address.name} ?`)
+      ) {
+        await this.deleteAddress(this.address.id);
+      }
+    },
 
     async onSubmit() {
       if (
@@ -178,10 +206,7 @@ export default {
         comment: this.comment,
       };
       const index = this.index;
-
-      debugger;
-
-      await this.addAddress({ address, index });
+      await this.editAddress({ address, index });
     },
   },
 };

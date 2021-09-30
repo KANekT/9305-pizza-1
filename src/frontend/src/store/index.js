@@ -27,6 +27,7 @@ const actions = {
   async init({ dispatch }) {
     dispatch("Builder/getAllData");
     dispatch("Cart/getAdditionals");
+    dispatch("Auth/getMe");
   },
   async createNotification({ commit }, { ...notification }) {
     const uniqueNotification = {
