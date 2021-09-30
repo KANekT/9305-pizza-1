@@ -34,14 +34,14 @@
         <div class="cart-form__input cart-form__input--small">
           <label class="input">
             <span>Дом*</span>
-            <input type="text" name="house" v-model="user.house" />
+            <input type="text" name="building" v-model="user.building" />
           </label>
         </div>
 
         <div class="cart-form__input cart-form__input--small">
           <label class="input">
             <span>Квартира</span>
-            <input type="text" name="apartment" v-model="user.apartment" />
+            <input type="text" name="flat" v-model="user.flat" />
           </label>
         </div>
       </div>
@@ -59,9 +59,9 @@ export default {
       typeAddress: "1",
       user: {
         tel: "",
-        house: "",
+        building: "",
         street: "",
-        apartment: "",
+        flat: "",
       },
     };
   },

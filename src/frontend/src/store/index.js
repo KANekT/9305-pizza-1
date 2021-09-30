@@ -9,6 +9,7 @@ import {
   SET_DATA,
   SET_ENTITY,
   ADD_ENTITY,
+  REPLACE_ENTITY,
   UPDATE_ENTITY,
   DELETE_ENTITY,
 } from "@/store/mutations-types";
@@ -60,6 +61,13 @@ const mutations = {
       state[module][entity] = [...state[module][entity], value];
     } else {
       state[entity] = [...state[entity], value];
+    }
+  },
+  [REPLACE_ENTITY](state, { module, entity, index, value }) {
+    if (module) {
+      state[module][entity].splice(index, 1, value);
+    } else {
+      state[entity].splice(index, 1, value);
     }
   },
   [UPDATE_ENTITY](state, { module, entity, value }) {
