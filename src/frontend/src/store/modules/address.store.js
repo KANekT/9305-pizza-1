@@ -19,7 +19,7 @@ export default {
   },
   actions: {
     async getAddresses({ commit }) {
-      const addresses = await this.$api.address.query();
+      const addresses = await this.$api.addresses.query();
       const data = addresses.map((it) => {
         let clItem = cloneDeep(it);
         clItem.isCollapsed = true;

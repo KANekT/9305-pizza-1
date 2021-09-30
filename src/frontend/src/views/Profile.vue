@@ -41,15 +41,15 @@ export default {
   components: {
     AddressForm,
   },
-  async mounted() {
+  async created() {
     await this.getAddresses();
   },
   computed: {
     ...mapState("Auth", ["user"]),
-    ...mapState("Address", ["address", "getAddresses"]),
+    ...mapState("Address", ["address"]),
   },
   methods: {
-    ...mapActions("Address", ["addAddress"]),
+    ...mapActions("Address", ["getAddresses", "addAddress"]),
 
     async add() {
       await this.addAddress({});
