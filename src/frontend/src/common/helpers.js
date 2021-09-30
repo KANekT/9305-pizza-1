@@ -6,6 +6,11 @@ import {
   ReadOnlyApiService,
 } from "@/services/api.service";
 
+export const setAuth = (store) => {
+  store.$api.auth.setAuthHeader();
+  store.dispatch("Auth/getMe");
+};
+
 export const capitalize = (string) =>
   `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
 

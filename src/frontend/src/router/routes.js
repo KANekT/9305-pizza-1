@@ -35,10 +35,12 @@ export default [
     path: "/orders",
     name: "Orders",
     component: getView("Orders"),
+    meta: { layout: "AppLayoutCabinet" },
   },
   {
     path: "/profile",
     name: "Profile",
     component: getView("Profile"),
+    meta: { layout: "AppLayoutCabinet" },
   },
 ];
