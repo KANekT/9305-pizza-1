@@ -1,4 +1,4 @@
-import NOTIFICATION_TYPES from "@/common/constants";
+import { NOTIFICATION_TYPES } from "@/common/constants";
 
 // eslint-disable-next-line max-len
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields

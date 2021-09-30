@@ -1,13 +1,18 @@
+import { uniqueId } from "lodash";
 import Vue from "vue";
 import Vuex from "vuex";
+import VuexPlugins from "@/plugins/vuexPlugins";
 import modules from "@/store/modules";
 import {
+  ADD_NOTIFICATION,
+  DELETE_NOTIFICATION,
   SET_DATA,
   SET_ENTITY,
   ADD_ENTITY,
   UPDATE_ENTITY,
   DELETE_ENTITY,
 } from "@/store/mutations-types";
+import { MESSAGE_LIVE_TIME } from "@/common/constants";
 
 Vue.use(Vuex);
 
@@ -19,6 +24,17 @@ const actions = {
   async init({ dispatch }) {
     dispatch("Builder/getAllData");
     dispatch("Cart/getAdditionals");
+  },
+  async createNotification({ commit }, { ...notification }) {
+    const uniqueNotification = {
+      ...notification,
+      id: uniqueId(),
+    };
+    commit(ADD_NOTIFICATION, uniqueNotification);
+    setTimeout(
+      () => commit(DELETE_NOTIFICATION, uniqueNotification.id),
+      MESSAGE_LIVE_TIME
+    );
   },
 };
 
@@ -71,4 +87,5 @@ export default new Vuex.Store({
   actions,
   mutations,
   modules,
+  plugins: [VuexPlugins],
 });

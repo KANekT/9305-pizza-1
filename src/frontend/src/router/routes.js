@@ -8,7 +8,7 @@ export default [
     children: [
       {
         path: "/login",
-        name: "Login",
+        name: "LoginIndex",
         component: getView("Login"),
       },
     ],
