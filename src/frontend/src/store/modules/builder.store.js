@@ -1,4 +1,3 @@
-import { dough, ingredients, sauces, sizes } from "@/static/pizza.json";
 import {
   capitalize,
   createID,
@@ -101,8 +100,11 @@ export default {
   },
 
   actions: {
-    getAllData({ commit }) {
-      // TODO: Add api call
+    async getAllData({ commit }) {
+      const sizes = await this.$api.sizes.query();
+      const sauces = await this.$api.sauces.query();
+      const ingredients = await this.$api.ingredients.query();
+      const dough = await this.$api.dough.query();
       const data = {
         id: createID(),
         title: "",
@@ -179,7 +181,6 @@ export default {
     },
 
     clearPizza({ state, commit }) {
-      // TODO: Add api call
       const data = {
         id: createID(),
         title: "",
@@ -204,7 +205,6 @@ export default {
     },
 
     editPizza({ commit, state }, pizza) {
-      // TODO: Add api call
       const data = {
         id: pizza.id,
         title: pizza.title,

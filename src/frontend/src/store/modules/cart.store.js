@@ -1,5 +1,3 @@
-import misc from "@/static/misc.json";
-
 import { capitalize } from "@/common/helpers";
 import { cloneDeep } from "lodash";
 import {
@@ -40,8 +38,8 @@ export default {
   },
 
   actions: {
-    getAdditionals({ commit }) {
-      // TODO: Add api call
+    async getAdditionals({ commit }) {
+      const misc = await this.$api.misc.query();
       const data = misc.map((it) => {
         let clItem = cloneDeep(it);
         clItem.count = 0;
