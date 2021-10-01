@@ -40,10 +40,17 @@
           />
         </router-link>
 
-        <router-link class="layout__link" to="/orders"
-          >История заказов</router-link
+        <router-link
+          class="layout__link"
+          to="/orders"
+          active-class="layout__link--active"
         >
-        <router-link class="layout__link layout__link--active" to="/profile"
+          История заказов</router-link
+        >
+        <router-link
+          class="layout__link"
+          to="/profile"
+          active-class="layout__link--active"
           >Мои данные</router-link
         >
       </div>

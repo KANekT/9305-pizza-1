@@ -48,10 +48,26 @@ export default {
       );
     },
 
-    editOrder({ commit }, order) {
+    async editOrder({ commit }, order) {
       const item = cloneDeep(order);
       commit(
         UPDATE_ENTITY,
+        {
+          ...namespace,
+          entity: "orders",
+          value: item,
+        },
+        { root: true }
+      );
+    },
+
+    async cloneOrder({ commit }, order) {
+      const item = cloneDeep(order);
+
+      const entity = await this.$api.orders.post(item);
+      item.id = entity.id;
+      commit(
+        ADD_ENTITY,
         {
           ...namespace,
           entity: "orders",

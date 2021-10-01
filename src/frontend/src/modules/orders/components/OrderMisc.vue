@@ -1,0 +1,31 @@
+<template>
+  <li>
+    <img :src="additional.src" width="20" height="30" :alt="additional.name" />
+    <p>
+      <span>{{ additional.name }}</span>
+      <b>{{ additional.price }} ₽</b>
+    </p>
+  </li>
+</template>
+
+<script>
+import { mapState } from "vuex";
+
+export default {
+  name: "OrderMisc",
+  props: {
+    misc: {
+      type: Object,
+      required: true,
+      default: () => ({}),
+    },
+  },
+  computed: {
+    ...mapState("Cart", ["additionals"]),
+
+    additional() {
+      return this.additionals.find((it) => it.id === this.misc.miscId);
+    },
+  },
+};
+</script>

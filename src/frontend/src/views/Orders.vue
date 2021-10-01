@@ -11,14 +11,22 @@
         </div>
 
         <div class="order__sum">
-          <span>Сумма заказа: {{}}₽</span>
+          <span>Сумма заказа: ₽</span>
         </div>
 
         <div class="order__button">
-          <button type="button" class="button button--border">Удалить</button>
+          <button
+            type="button"
+            class="button button--border"
+            @click="remove(order.id)"
+          >
+            Удалить
+          </button>
         </div>
         <div class="order__button">
-          <button type="button" class="button">Повторить</button>
+          <button type="button" class="button" @click="clone(order.id)">
+            Повторить
+          </button>
         </div>
       </div>
 
@@ -32,39 +40,11 @@
       </ul>
 
       <ul class="order__additional">
-        <li>
-          <img
-            src="@/assets/img/cola.svg"
-            width="20"
-            height="30"
-            alt="Coca-Cola 0,5 литра"
-          />
-          <p>
-            <span>Coca-Cola 0,5 литра</span>
-            <b>56 ₽</b>
-          </p>
-        </li>
-        <li>
-          <img
-            src="@/assets/img/sauce.svg"
-            width="20"
-            height="30"
-            alt="Острый соус"
-          />
-          <span>Острый соус <br />30 ₽</span>
-        </li>
-        <li>
-          <img
-            src="@/assets/img/potato.svg"
-            width="20"
-            height="30"
-            alt="Картошка из печи"
-          />
-          <p>
-            <span>Картошка из печи</span>
-            <b>170 ₽</b>
-          </p>
-        </li>
+        <OrderMisc
+          v-for="misc in order.orderMisc"
+          :misc="misc"
+          :key="misc.id"
+        />
       </ul>
 
       <p class="order__address">
@@ -76,25 +56,32 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+//
+import OrderMisc from "@/modules/orders/components/OrderMisc.vue";
 
 export default {
   name: "Orders",
+  components: { OrderMisc },
   async created() {
     await this.getOrders();
   },
   computed: {
     ...mapState("Orders", ["orders"]),
     ...mapState("Builder", ["sizes", "sauces", "ingredients"]),
+    ...mapState("Cart", ["additionals"]),
   },
   methods: {
-    ...mapActions("Orders", ["getOrders", "deleteOrder"]),
+    ...mapActions("Orders", ["getOrders", "cloneOrder", "deleteOrder"]),
 
-    async delete() {
-      await this.deleteOrder(0);
+    async clone(id) {
+      const item = this.orders.find((it) => it.id === id);
+      await this.cloneOrder(item);
     },
 
-    updatePizza(pizza) {
-      console.log(pizza);
+    async remove(id) {
+      if (confirm(`Подтвердите удаление заказа №${id}`)) {
+        await this.deleteOrder(id);
+      }
     },
   },
 };
