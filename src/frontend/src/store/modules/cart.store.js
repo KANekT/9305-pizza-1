@@ -26,8 +26,10 @@ export default {
     },
     price(state, getters) {
       if (getters.isNotEmpty) {
-        const pizzas = state.pizzas.map((it) => it.count * it.price);
-        const additionals = state.additionals.map((it) => it.count * it.price);
+        const pizzas = state.pizzas.map((it) => it.quantity * it.price);
+        const additionals = state.additionals.map(
+          (it) => it.quantity * it.price
+        );
         return (
           pizzas.reduce((total, i) => total + i) +
           additionals.reduce((total, i) => total + i)
@@ -42,7 +44,7 @@ export default {
       const misc = await this.$api.misc.query();
       const data = misc.map((it) => {
         let clItem = cloneDeep(it);
-        clItem.count = 0;
+        clItem.quantity = 0;
         clItem.src = require("./../../assets/img/" +
           clItem.image.substring(12));
         return clItem;
@@ -73,7 +75,7 @@ export default {
 
     updatePizzaCount({ state, commit }, { index, value }) {
       let clItem = cloneDeep(state.pizzas[index]);
-      clItem.count = clItem.count + value;
+      clItem.quantity = clItem.quantity + value;
       commit(
         UPDATE_ENTITY,
         {
@@ -99,7 +101,7 @@ export default {
 
     updateAdditionalCount({ state, commit }, { index, value }) {
       let clItem = cloneDeep(state.additionals[index]);
-      clItem.count = clItem.count + value;
+      clItem.quantity = clItem.quantity + value;
       commit(
         UPDATE_ENTITY,
         {

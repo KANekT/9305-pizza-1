@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     isDraggable() {
-      return this.transferData.count < 3;
+      return this.transferData.quantity < 3;
     },
   },
   methods: {

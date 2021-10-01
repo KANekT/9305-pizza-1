@@ -23,15 +23,12 @@
       </div>
 
       <ul class="order__list">
-        <li
-          class="order__item"
+        <AppProduct
+          :product="pizza"
+          :isOrder="true"
           v-for="pizza in order.orderPizzas"
           :key="pizza.id"
-        >
-          <AppProduct :product="pizza" @update="pizza.price = $event.value" />
-
-          <p class="order__price">{{ pizza.price }} ₽</p>
-        </li>
+        />
       </ul>
 
       <ul class="order__additional">

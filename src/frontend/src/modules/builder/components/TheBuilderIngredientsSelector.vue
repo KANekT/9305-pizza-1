@@ -42,7 +42,7 @@
                 <button
                   type="button"
                   class="counter__button counter__button--minus"
-                  :disabled="ingredient.count <= 0"
+                  :disabled="ingredient.quantity <= 0"
                   @click="update(index, -1)"
                 >
                   <span class="visually-hidden">Меньше</span>
@@ -51,12 +51,12 @@
                   type="text"
                   name="counter"
                   class="counter__input"
-                  :value="ingredient.count"
+                  :value="ingredient.quantity"
                 />
                 <button
                   type="button"
                   class="counter__button counter__button--plus"
-                  :disabled="ingredient.count >= 3"
+                  :disabled="ingredient.quantity >= 3"
                   @click="update(index, 1)"
                 >
                   <span class="visually-hidden">Больше</span>

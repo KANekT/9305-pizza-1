@@ -54,20 +54,20 @@ export default {
       if (getters.isFillState) {
         return getters.ingredientsInPizza.map((it) => {
           const css = "pizza__filling--" + it.value;
-          switch (it.count) {
+          switch (it.quantity) {
             case 2:
               return {
-                id: 2,
+                id: it.id * 10 + 2,
                 css: css + " pizza__filling--second",
               };
             case 3:
               return {
-                id: 3,
+                id: it.id * 10 + 3,
                 css: css + " pizza__filling--third",
               };
             default:
               return {
-                id: 1,
+                id: it.id * 10 + 1,
                 css: css,
               };
           }
@@ -76,7 +76,7 @@ export default {
       return [];
     },
     ingredientsInPizza(state) {
-      return state.ingredients.filter((it) => it.count > 0).map(cloneDeep);
+      return state.ingredients.filter((it) => it.quantity > 0).map(cloneDeep);
     },
     price(state, getters) {
       if (getters.isFillState) {
@@ -84,7 +84,7 @@ export default {
         const dough = state.doughs.find((it) => it.checked).price;
         const sauce = state.sauces.find((it) => it.checked).price;
         const ingredients = getters.ingredientsInPizza.map(
-          (it) => it.count * it.price
+          (it) => it.quantity * it.price
         );
         const sum =
           ingredients.length > 0
@@ -130,7 +130,7 @@ export default {
           let clItem = cloneDeep(it);
           clItem.value = clItem.image.substring(20);
           clItem.value = clItem.value.substring(0, clItem.value.length - 4);
-          clItem.count = 0;
+          clItem.quantity = 0;
           return clItem;
         }),
       };
@@ -148,8 +148,8 @@ export default {
       let item = cloneDeep(
         state.ingredients.find((it) => it.id === ingredient.id)
       );
-      if (item.count < 3) {
-        item.count++;
+      if (item.quantity < 3) {
+        item.quantity++;
       }
       commit(
         UPDATE_ENTITY,
@@ -164,7 +164,7 @@ export default {
 
     updateIngredient({ state, commit }, { index, value }) {
       let item = cloneDeep(state.ingredients[index]);
-      item.count = item.count + value;
+      item.quantity = item.quantity + value;
       commit(
         UPDATE_ENTITY,
         {
@@ -189,7 +189,7 @@ export default {
         sauces: setCheckedByIndex(state.sauces, 0),
         ingredients: state.ingredients.map((it) => {
           let clItem = cloneDeep(it);
-          clItem.count = 0;
+          clItem.quantity = 0;
           return clItem;
         }),
       };
@@ -207,15 +207,17 @@ export default {
     editPizza({ commit, state }, pizza) {
       const data = {
         id: pizza.id,
-        title: pizza.title,
-        sizes: setCheckedById(state.sizes, pizza.size.id),
-        doughs: setCheckedById(state.doughs, pizza.dough.id),
-        sauces: setCheckedById(state.sauces, pizza.sauce.id),
+        title: pizza.name,
+        sizes: setCheckedById(state.sizes, pizza.sizeId),
+        doughs: setCheckedById(state.doughs, pizza.doughId),
+        sauces: setCheckedById(state.sauces, pizza.sauceId),
         ingredients: state.ingredients.map((ing) => {
           let clItem = cloneDeep(ing);
-          const ingredient = pizza.ingredients.find((it) => it.id === ing.id);
-          clItem.count =
-            typeof ingredient !== "undefined" ? ingredient.count : 0;
+          const ingredient = pizza.ingredients.find(
+            (it) => it.ingredientId === ing.id
+          );
+          clItem.quantity =
+            typeof ingredient !== "undefined" ? ingredient.quantity : 0;
           return clItem;
         }),
       };
@@ -253,7 +255,7 @@ export default {
         ingredients: getters.ingredientsInPizza.map((it) => {
           return {
             ingredientId: it.id,
-            quantity: it.count,
+            quantity: it.quantity,
           };
         }),
         doughId: dough.id,

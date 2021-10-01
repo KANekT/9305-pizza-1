@@ -1,7 +1,5 @@
 <template>
-  <li class="cart-list__item">
-    <AppProduct :product="pizza" :css="'cart-list__product'" />
-
+  <AppProduct :product="pizza" :isOrder="false" :css="'cart-list__product'">
     <div class="counter cart-list__counter">
       <button
         type="button"
@@ -25,20 +23,17 @@
         <span class="visually-hidden">Больше</span>
       </button>
     </div>
-
-    <div class="cart-list__price">
-      <b>{{ price }} ₽</b>
-    </div>
-
-    <div class="cart-list__button">
-      <button type="button" class="cart-list__edit" @click="edit">
-        Изменить
-      </button>
-      <button type="button" class="cart-list__edit" @click="remove">
-        Удалить
-      </button>
-    </div>
-  </li>
+    <template v-slot:action>
+      <div class="cart-list__button">
+        <button type="button" class="cart-list__edit" @click="edit">
+          Изменить
+        </button>
+        <button type="button" class="cart-list__edit" @click="remove">
+          Удалить
+        </button>
+      </div>
+    </template>
+  </AppProduct>
 </template>
 
 <script>
@@ -78,7 +73,7 @@ export default {
 
     async remove() {
       if (
-        confirm(`Вы действительно хотите удалить пиццу "${this.pizza.title}"?`)
+        confirm(`Вы действительно хотите удалить пиццу "${this.pizza.name}"?`)
       ) {
         await this.deletePizza(this.pizza.id);
       }

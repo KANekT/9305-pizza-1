@@ -21,7 +21,7 @@
             <button
               type="button"
               class="counter__button counter__button--minus"
-              :disabled="additional.count <= 0"
+              :disabled="additional.quantity <= 0"
               @click="update(index, -1)"
             >
               <span class="visually-hidden">Меньше</span>
@@ -30,7 +30,7 @@
               type="text"
               name="counter"
               class="counter__input"
-              :value="additional.count"
+              :value="additional.quantity"
             />
             <button
               type="button"

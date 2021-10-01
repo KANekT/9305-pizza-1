@@ -88,27 +88,28 @@ export default {
           flat: "string",
           comment: "string",
         },
+
         pizzas: this.pizzas.map((it) => {
           return {
-            name: it.title,
-            sauceId: it.sauce.id,
-            doughId: it.dough.id,
-            sizeId: it.size.id,
-            quantity: it.count,
+            name: it.name,
+            sauceId: it.sauceId,
+            doughId: it.doughId,
+            sizeId: it.sizeId,
+            quantity: it.quantity,
             ingredients: it.ingredients.map((ing) => {
               return {
-                ingredientId: ing.id,
-                quantity: ing.count,
+                ingredientId: ing.ingredientId,
+                quantity: ing.quantity,
               };
             }),
           };
         }),
         misc: this.additionals
-          .filter((it) => it.count > 0)
+          .filter((it) => it.quantity > 0)
           .map((it) => {
             return {
               miscId: it.id,
-              quantity: it.count,
+              quantity: it.quantity,
             };
           }),
       };
