@@ -6,6 +6,7 @@ import AppNotifications from "@/common/components/AppNotifications";
 import AppInput from "@/common/components/AppInput";
 //import AppTextarea from '@/common/components/AppTextarea';
 //import AppIcon from '@/common/components/AppIcon';
+import AppProduct from "@/common/components/AppProduct";
 
 //Vue.component('AppModal', AppModal);
 //Vue.component('AppLayout', AppLayout);
@@ -14,3 +15,4 @@ Vue.component("AppNotifications", AppNotifications);
 Vue.component("AppInput", AppInput);
 //Vue.component('AppTextarea', AppTextarea);
 //Vue.component('AppIcon', AppIcon);
+Vue.component("AppProduct", AppProduct);

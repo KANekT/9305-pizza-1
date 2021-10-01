@@ -245,42 +245,22 @@ export default {
     pizza({ state, getters }) {
       const sauce = state.sauces.find((it) => it.checked);
       const dough = state.doughs.find((it) => it.checked);
-
-      function getDough(dough) {
-        switch (dough.value) {
-          case "light":
-            return {
-              id: dough.id,
-              name: "на тонком тесте",
-            };
-          case "large":
-            return {
-              id: dough.id,
-              name: "на толстом тесте",
-            };
-          default:
-            return {};
-        }
-      }
+      const size = state.sizes.find((it) => it.checked);
 
       return {
         id: state.id,
-        title: state.title,
+        name: state.title,
         ingredients: getters.ingredientsInPizza.map((it) => {
           return {
-            id: it.id,
-            name: it.name.toLowerCase(),
-            count: it.count,
+            ingredientId: it.id,
+            quantity: it.count,
           };
         }),
-        dough: getDough(dough),
-        sauce: {
-          id: sauce.id,
-          name: sauce.name.toLowerCase(),
-        },
-        size: state.sizes.find((it) => it.checked),
+        doughId: dough.id,
+        sauceId: sauce.id,
+        sizeId: size.id,
+        quantity: 1,
         price: getters.price,
-        count: 1,
       };
     },
   },

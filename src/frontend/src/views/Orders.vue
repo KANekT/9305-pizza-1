@@ -11,7 +11,7 @@
         </div>
 
         <div class="order__sum">
-          <span>Сумма заказа: ₽</span>
+          <span>Сумма заказа: {{}}₽</span>
         </div>
 
         <div class="order__button">
@@ -28,27 +28,9 @@
           v-for="pizza in order.orderPizzas"
           :key="pizza.id"
         >
-          <div class="product">
-            <img
-              src="@/assets/img/product.svg"
-              class="product__img"
-              width="56"
-              height="56"
-              alt="Капричоза"
-            />
-            <div class="product__text">
-              <h2>{{ pizza.name }}</h2>
-              <ul>
-                <li>30 см, на тонком тесте</li>
-                <li>Соус: томатный</li>
-                <li>
-                  Начинка: грибы, лук, ветчина, пармезан, ананас, бекон, блю чиз
-                </li>
-              </ul>
-            </div>
-          </div>
+          <AppProduct :product="pizza" @update="pizza.price = $event.value" />
 
-          <p class="order__price">782 ₽</p>
+          <p class="order__price">{{ pizza.price }} ₽</p>
         </li>
       </ul>
 
@@ -105,12 +87,17 @@ export default {
   },
   computed: {
     ...mapState("Orders", ["orders"]),
+    ...mapState("Builder", ["sizes", "sauces", "ingredients"]),
   },
   methods: {
     ...mapActions("Orders", ["getOrders", "deleteOrder"]),
 
     async delete() {
       await this.deleteOrder(0);
+    },
+
+    updatePizza(pizza) {
+      console.log(pizza);
     },
   },
 };

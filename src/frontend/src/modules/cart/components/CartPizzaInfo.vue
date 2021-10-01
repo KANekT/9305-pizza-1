@@ -1,28 +1,12 @@
 <template>
   <li class="cart-list__item">
-    <div class="product cart-list__product">
-      <img
-        src="@/assets/img/product.svg"
-        class="product__img"
-        width="56"
-        height="56"
-        alt="Капричоза"
-      />
-      <div class="product__text">
-        <h2>{{ pizza.title }}</h2>
-        <ul>
-          <li>{{ pizza.size.name }}, {{ pizza.dough.name }}</li>
-          <li>Соус: {{ pizza.sauce.name }}</li>
-          <li>Начинка: {{ filling }}</li>
-        </ul>
-      </div>
-    </div>
+    <AppProduct :product="pizza" :css="'cart-list__product'" />
 
     <div class="counter cart-list__counter">
       <button
         type="button"
         class="counter__button counter__button--minus"
-        :disabled="pizza.count <= 1"
+        :disabled="pizza.quantity <= 1"
         @click="update(index, -1)"
       >
         <span class="visually-hidden">Меньше</span>
@@ -31,7 +15,7 @@
         type="text"
         name="counter"
         class="counter__input"
-        :value="pizza.count"
+        :value="pizza.quantity"
       />
       <button
         type="button"
@@ -75,11 +59,8 @@ export default {
     },
   },
   computed: {
-    filling() {
-      return this.pizza.ingredients.map((it) => it.name).join(", ");
-    },
     price() {
-      return this.pizza.count * this.pizza.price;
+      return this.pizza.quantity * this.pizza.price;
     },
   },
   methods: {
