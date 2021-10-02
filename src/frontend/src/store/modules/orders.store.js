@@ -63,6 +63,35 @@ export default {
 
     async cloneOrder({ commit }, order) {
       const item = cloneDeep(order);
+      console.log(item);
+      /*const order = {
+        userId: this.isAuth ? this.user.id : null,
+        phone: this.phone,
+
+        pizzas: this.pizzas.map((it) => {
+          return {
+            name: it.name,
+            sauceId: it.sauceId,
+            doughId: it.doughId,
+            sizeId: it.sizeId,
+            quantity: it.quantity,
+            ingredients: it.ingredients.map((ing) => {
+              return {
+                ingredientId: ing.ingredientId,
+                quantity: ing.quantity,
+              };
+            }),
+          };
+        }),
+        misc: this.additionals
+          .filter((it) => it.quantity > 0)
+          .map((it) => {
+            return {
+              miscId: it.id,
+              quantity: it.quantity,
+            };
+          }),
+      };*/
 
       const entity = await this.$api.orders.post(item);
       item.id = entity.id;

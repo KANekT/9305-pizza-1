@@ -85,11 +85,11 @@ export default {
 
     getPrice() {
       const multiplier =
-        this.sizes?.find((it) => it.id === this.product.sizeId).multiplier ?? 0;
+        this.sizes.find((it) => it.id === this.product.sizeId)?.multiplier ?? 0;
       const dough =
-        this.doughs?.find((it) => it.id === this.product.doughId).price ?? 0;
+        this.doughs.find((it) => it.id === this.product.doughId)?.price ?? 0;
       const sauce =
-        this.sauces?.find((it) => it.id === this.product.sauceId).price ?? 0;
+        this.sauces.find((it) => it.id === this.product.sauceId)?.price ?? 0;
 
       const ingredients = this.product.ingredients.map(
         (it) =>

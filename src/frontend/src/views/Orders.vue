@@ -47,8 +47,8 @@
         />
       </ul>
 
-      <p class="order__address">
-        Адрес доставки: Тест (или если адрес новый - писать целиком)
+      <p class="order__address" v-if="order.addressId">
+        Адрес доставки: {{ order.orderAddress.name }}
       </p>
     </section>
   </div>

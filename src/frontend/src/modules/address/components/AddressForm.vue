@@ -163,7 +163,7 @@ export default {
       return this.address.flat.length > 0 ? `, кв. ${this.address.flat}` : "";
     },
     isEmptyComment() {
-      return this.address.comment.length === 0;
+      return this.address.comment?.length === 0;
     },
   },
   methods: {

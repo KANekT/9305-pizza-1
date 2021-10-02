@@ -7,8 +7,8 @@
         <select
           name="test"
           class="select"
-          v-model="typeAddress"
-          @change="changeAddress"
+          v-model="id"
+          @change="changeAddress()"
         >
           <option value="-1">Получу сам</option>
           <option value="0">Новый адрес</option>
@@ -27,10 +27,11 @@
           name="phone"
           class="input"
           placeholder="+7 999-999-99-99"
+          @input="checkForm()"
         />
       </label>
 
-      <div class="cart-form__address" v-if="+typeAddress >= 0">
+      <div class="cart-form__address" v-if="+id >= 0">
         <span class="cart-form__label">Новый адрес:</span>
 
         <div class="cart-form__input">
@@ -44,7 +45,8 @@
               class="input"
               placeholder="Введите название улицы"
               :error-text="validations.street.error"
-              :readonly="+typeAddress > 0"
+              :readonly="+id > 0"
+              @input="checkForm()"
             />
           </label>
         </div>
@@ -60,7 +62,8 @@
               class="input"
               placeholder="Введите номер дома"
               :error-text="validations.building.error"
-              :readonly="+typeAddress > 0"
+              :readonly="+id > 0"
+              @input="checkForm()"
             />
           </label>
         </div>
@@ -75,7 +78,7 @@
               name="flat"
               class="input"
               placeholder="Введите № квартиры"
-              :readonly="+typeAddress > 0"
+              :readonly="+id > 0"
             />
           </label>
         </div>
@@ -94,24 +97,31 @@ export default {
   mixins: [validator],
   data() {
     return {
-      typeAddress: -1,
+      id: -1,
       phone: "",
       building: "",
       street: "",
       flat: "",
       validations: {
+        phone: {
+          error: "Введите телефон",
+          rules: ["required"],
+        },
         street: {
-          error: "",
+          error: "Введите улицу",
           rules: ["required"],
         },
         building: {
-          error: "",
+          error: "Введите дом",
           rules: ["required"],
         },
       },
     };
   },
   watch: {
+    phone() {
+      this.$clearValidationErrors();
+    },
     street() {
       this.$clearValidationErrors();
     },
@@ -123,38 +133,60 @@ export default {
     ...mapState("Cart", ["pizzas"]),
     ...mapGetters("Auth", ["isAuth"]),
     ...mapState("Address", ["address"]),
-
-    isValid() {
-      if (
-        !this.$validateFields(
-          { street: this.street, building: this.building },
-          this.validations
-        )
-      ) {
-        this.$emit("isValid", false);
-        return false;
-      }
-
-      this.$emit("isValid", true);
-      return true;
-    },
   },
   methods: {
     changeAddress() {
-      const type = +this.typeAddress;
-      if (type === 0) {
-        this.building = "";
-        this.street = "";
-        this.flat = "";
-      } else if (type > 0) {
-        const clItem = cloneDeep(
-          this.address.find((it) => it.id === +this.typeAddress)
-        );
+      const type = +this.id;
+      if (type > 0) {
+        const clItem = cloneDeep(this.address.find((it) => it.id === +this.id));
 
         this.building = clItem.building;
         this.street = clItem.street;
         this.flat = clItem.flat;
+      } else {
+        this.building = "";
+        this.street = "";
+        this.flat = "";
       }
+      this.checkForm();
+    },
+
+    checkForm() {
+      const type = +this.id;
+      if (
+        type === -1 &&
+        !this.$validateFields(
+          { phone: this.phone },
+          {
+            phone: {
+              error: "Введите телефон",
+              rules: ["required"],
+            },
+          }
+        )
+      ) {
+        return;
+      }
+
+      if (
+        type === 0 &&
+        !this.$validateFields(
+          { phone: this.phone, street: this.street, building: this.building },
+          this.validations
+        )
+      ) {
+        return;
+      }
+
+      this.$emit("setAddress", {
+        address: {
+          id: this.id,
+          street: this.street,
+          building: this.building,
+          flat: this.flat,
+        },
+        phone: this.phone,
+      });
     },
   },
 };

@@ -13,7 +13,7 @@
 
           <TheCartPizzas v-if="!isEmpty" />
           <TheCartAdditional v-if="!isEmpty" />
-          <TheCartOrderUser v-if="!isEmpty" @isValid="isValid" />
+          <TheCartOrderUser v-if="!isEmpty" @setAddress="setAddress" />
         </div>
       </main>
       <section class="footer">
@@ -32,7 +32,7 @@
         </div>
 
         <div class="footer__submit">
-          <button type="submit" class="button" :disabled="isValid">
+          <button type="submit" class="button" :disabled="!isValidForm">
             Оформить заказ
           </button>
         </div>
@@ -53,7 +53,9 @@ export default {
   name: "Cart",
   data() {
     return {
-      isValid: false,
+      isValidForm: false,
+      address: {},
+      phone: "",
     };
   },
   components: {
@@ -74,20 +76,27 @@ export default {
   },
   methods: {
     ...mapActions("Builder", ["clearPizza"]),
-    ...mapActions("Cart", ["clearData"]),
     ...mapActions("Address", ["getAddresses"]),
     ...mapActions("Orders", ["addOrder"]),
+
+    setAddress(event) {
+      console.log(event);
+      const { address, phone } = event;
+      if (address) {
+        this.address = address;
+        this.phone = phone;
+        this.isValidForm = true;
+      } else {
+        this.address = {};
+        this.phone = "";
+        this.isValidForm = false;
+      }
+    },
 
     async onSubmit() {
       const order = {
         userId: this.isAuth ? this.user.id : null,
-        phone: "",
-        address: {
-          street: "string",
-          building: "string",
-          flat: "string",
-          comment: "string",
-        },
+        phone: this.phone,
 
         pizzas: this.pizzas.map((it) => {
           return {
@@ -113,6 +122,11 @@ export default {
             };
           }),
       };
+
+      if (this.address.id >= 0) {
+        order.address = this.address;
+        this.address.id > 0 ? this.address.id : null;
+      }
 
       await this.addOrder(order);
       await this.$router.push("/order_placed");

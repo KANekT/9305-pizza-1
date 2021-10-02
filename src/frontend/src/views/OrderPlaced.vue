@@ -26,10 +26,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions("Cart", ["clear"]),
+    ...mapActions("Cart", ["clearData"]),
 
     async order() {
-      await this.clear();
+      await this.clearData();
       await this.$router.push(this.getUrl);
     },
   },
