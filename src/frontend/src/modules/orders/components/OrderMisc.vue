@@ -28,8 +28,8 @@ export default {
     },
 
     getPrice() {
-      return this.additional.quantity > 1
-        ? `${this.additional.quantity} X ${this.additional.price}`
+      return this.misc.quantity > 1
+        ? `${this.misc.quantity} X ${this.additional.price}`
         : `${this.additional.price}`;
     },
   },

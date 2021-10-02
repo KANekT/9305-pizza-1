@@ -30,6 +30,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { getPizzaPrice } from "@/common/helpers";
 
 export default {
   name: "AppProduct",
@@ -84,25 +85,16 @@ export default {
     },
 
     getPrice() {
-      const multiplier =
-        this.sizes.find((it) => it.id === this.product.sizeId)?.multiplier ?? 0;
-      const dough =
-        this.doughs.find((it) => it.id === this.product.doughId)?.price ?? 0;
-      const sauce =
-        this.sauces.find((it) => it.id === this.product.sauceId)?.price ?? 0;
-
-      const ingredients = this.product.ingredients.map(
-        (it) =>
-          it.quantity *
-            this.ingredients.find((ing) => ing.id === it.ingredientId)?.price ??
-          0
+      const total = getPizzaPrice(
+        this.product,
+        this.sizes,
+        this.doughs,
+        this.sauces,
+        this.ingredients
       );
-
-      const sum =
-        ingredients.length > 0
-          ? ingredients.reduce((total, i) => total + i)
-          : 0;
-      return multiplier * (dough + sauce + sum);
+      return this.product.quantity > 1
+        ? `${this.product.quantity} X ${total}`
+        : `${total}`;
     },
   },
 };

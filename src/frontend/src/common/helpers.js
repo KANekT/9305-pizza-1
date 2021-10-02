@@ -55,3 +55,22 @@ export const createResources = (notifier) => {
     [RESOURCES.ADDRESS]: new CrudApiService(RESOURCES.ADDRESS, notifier),
   };
 };
+
+export function getPizzaPrice(pizza, sizes, doughs, sauces, ingredients) {
+  const multiplier =
+    sizes.find((it) => it.id === pizza.sizeId)?.multiplier ?? 0;
+  const dough = doughs.find((it) => it.id === pizza.doughId)?.price ?? 0;
+  const sauce = sauces.find((it) => it.id === pizza.sauceId)?.price ?? 0;
+
+  const ingredientsInPizza = pizza.ingredients.map(
+    (it) =>
+      it.quantity *
+        ingredients.find((ing) => ing.id === it.ingredientId)?.price ?? 0
+  );
+
+  const sum =
+    ingredientsInPizza.length > 0
+      ? ingredientsInPizza.reduce((total, i) => total + i)
+      : 0;
+  return multiplier * (dough + sauce + sum);
+}

@@ -35,14 +35,16 @@ export default {
     async addOrder({ commit }, order) {
       const item = cloneDeep(order);
 
-      const entity = await this.$api.orders.post(item);
-      item.id = entity.id;
+      await this.$api.orders.post(item);
+      const orders = await this.$api.orders.query();
+      const data = orders.map((it) => cloneDeep(it));
+
       commit(
-        ADD_ENTITY,
+        SET_ENTITY,
         {
           ...namespace,
           entity: "orders",
-          value: item,
+          value: data,
         },
         { root: true }
       );
@@ -92,7 +94,7 @@ export default {
       if (item.orderMisc) {
         cloneOrder.misc = item.orderMisc.map((it) => {
           return {
-            miscId: it.id,
+            miscId: it.miscId,
             quantity: it.quantity,
           };
         });
