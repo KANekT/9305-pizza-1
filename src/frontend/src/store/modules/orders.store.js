@@ -63,12 +63,10 @@ export default {
 
     async cloneOrder({ commit }, order) {
       const item = cloneDeep(order);
-      console.log(item);
-      /*const order = {
-        userId: this.isAuth ? this.user.id : null,
-        phone: this.phone,
-
-        pizzas: this.pizzas.map((it) => {
+      const cloneOrder = {
+        userId: item.userId,
+        phone: item.phone,
+        pizzas: item.orderPizzas.map((it) => {
           return {
             name: it.name,
             sauceId: it.sauceId,
@@ -83,17 +81,24 @@ export default {
             }),
           };
         }),
-        misc: this.additionals
-          .filter((it) => it.quantity > 0)
-          .map((it) => {
-            return {
-              miscId: it.id,
-              quantity: it.quantity,
-            };
-          }),
-      };*/
+      };
 
-      const entity = await this.$api.orders.post(item);
+      if (order.addressId) {
+        cloneOrder.address = {
+          id: item.orderAddress.id,
+        };
+      }
+
+      if (item.orderMisc) {
+        cloneOrder.misc = item.orderMisc.map((it) => {
+          return {
+            miscId: it.id,
+            quantity: it.quantity,
+          };
+        });
+      }
+
+      const entity = await this.$api.orders.post(cloneOrder);
       item.id = entity.id;
       commit(
         ADD_ENTITY,

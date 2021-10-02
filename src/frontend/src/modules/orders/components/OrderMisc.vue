@@ -3,7 +3,7 @@
     <img :src="additional.src" width="20" height="30" :alt="additional.name" />
     <p>
       <span>{{ additional.name }}</span>
-      <b>{{ additional.price }} ₽</b>
+      <b>{{ getPrice }} ₽</b>
     </p>
   </li>
 </template>
@@ -25,6 +25,12 @@ export default {
 
     additional() {
       return this.additionals.find((it) => it.id === this.misc.miscId);
+    },
+
+    getPrice() {
+      return this.additional.quantity > 1
+        ? `${this.additional.quantity} X ${this.additional.price}`
+        : `${this.additional.price}`;
     },
   },
 };
