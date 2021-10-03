@@ -40,43 +40,6 @@ export default {
         state.sauces.length > 0
       );
     },
-    foundation(state, getters) {
-      if (getters.isFillState) {
-        const cssDough =
-          state.doughs.find((it) => it.checked).value === "light"
-            ? "small"
-            : "big";
-        const cssSauce =
-          state.sauces.find((it) => it.checked).id === 1 ? "tomato" : "creamy";
-
-        return `pizza--foundation--${cssDough}-${cssSauce}`;
-      } else return "pizza--foundation--small-tomato";
-    },
-    fillings(state, getters) {
-      if (getters.isFillState) {
-        return getters.ingredientsInPizza.map((it) => {
-          const css = "pizza__filling--" + it.value;
-          switch (it.quantity) {
-            case 2:
-              return {
-                id: it.id * 10 + 2,
-                css: css + " pizza__filling--second",
-              };
-            case 3:
-              return {
-                id: it.id * 10 + 3,
-                css: css + " pizza__filling--third",
-              };
-            default:
-              return {
-                id: it.id * 10 + 1,
-                css: css,
-              };
-          }
-        });
-      }
-      return [];
-    },
     ingredientsInPizza(state) {
       return state.ingredients.filter((it) => it.quantity > 0).map(cloneDeep);
     },
@@ -103,32 +66,35 @@ export default {
 
   actions: {
     async getAllData({ commit }) {
-      const sizes = await this.$api.sizes.query();
-      const sauces = await this.$api.sauces.query();
-      const ingredients = await this.$api.ingredients.query();
-      const dough = await this.$api.dough.query();
+      const allData = await Promise.all([
+        this.$api.sizes.query(),
+        this.$api.dough.query(),
+        this.$api.sauces.query(),
+        this.$api.ingredients.query(),
+      ]);
+
       const data = {
         id: createID(),
         title: "",
-        sizes: sizes.map((it, i) => {
+        sizes: allData[0].map((it, i) => {
           let clItem = cloneDeep(it);
           clItem.class = PIZZA_SIZES_ENUM[clItem.multiplier];
           clItem.checked = i === 0;
           return clItem;
         }),
-        doughs: dough.map((it, i) => {
+        doughs: allData[1].map((it, i) => {
           let clItem = cloneDeep(it);
           clItem.value = clItem.image.substring(18);
           clItem.value = clItem.value.substring(0, clItem.value.length - 4);
           clItem.checked = i === 0;
           return clItem;
         }),
-        sauces: sauces.map((it, i) => {
+        sauces: allData[2].map((it, i) => {
           let clItem = cloneDeep(it);
           clItem.checked = i === 0;
           return clItem;
         }),
-        ingredients: ingredients.map((it) => {
+        ingredients: allData[3].map((it) => {
           let clItem = cloneDeep(it);
           clItem.value = clItem.image.substring(20);
           clItem.value = clItem.value.substring(0, clItem.value.length - 4);

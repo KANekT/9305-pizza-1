@@ -67,7 +67,7 @@ export default {
         }
       }
 
-      if (index) {
+      if (typeof index !== "undefined") {
         commit(
           REPLACE_ENTITY,
           {
