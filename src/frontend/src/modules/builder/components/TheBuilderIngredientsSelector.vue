@@ -32,7 +32,10 @@
               v-for="(ingredient, index) in ingredients"
               :key="ingredient.id"
             >
-              <AppDrag :transferData="ingredient">
+              <AppDrag
+                :transferData="ingredient"
+                :isDraggable="ingredient.quantity < 3"
+              >
                 <span class="filling" :class="`filling--${ingredient.value}`">{{
                   ingredient.name
                 }}</span>

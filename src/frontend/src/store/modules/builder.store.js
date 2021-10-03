@@ -7,6 +7,7 @@ import {
 import { cloneDeep } from "lodash";
 import {
   SET_DATA,
+  SET_ENTITY,
   UPDATE_DOUGHS,
   UPDATE_SIZES,
   UPDATE_SAUCES,
@@ -24,6 +25,7 @@ export default {
   state: {
     id: 1,
     title: "",
+    quantity: 1,
     doughs: [],
     ingredients: [],
     sauces: [],
@@ -202,11 +204,22 @@ export default {
         },
         { root: true }
       );
+
+      commit(
+        SET_ENTITY,
+        {
+          ...namespace,
+          entity: "quantity",
+          value: 1,
+        },
+        { root: true }
+      );
     },
 
     editPizza({ commit, state }, pizza) {
       const data = {
         id: pizza.id,
+        quantity: state.quantity,
         title: pizza.name,
         sizes: setCheckedById(state.sizes, pizza.sizeId),
         doughs: setCheckedById(state.doughs, pizza.doughId),
@@ -221,6 +234,16 @@ export default {
           return clItem;
         }),
       };
+
+      commit(
+        SET_ENTITY,
+        {
+          ...namespace,
+          entity: "quantity",
+          value: pizza.quantity,
+        },
+        { root: true }
+      );
 
       commit(
         SET_DATA,
@@ -261,7 +284,7 @@ export default {
         doughId: dough.id,
         sauceId: sauce.id,
         sizeId: size.id,
-        quantity: 1,
+        quantity: state.quantity,
         price: getters.price,
       };
     },

@@ -80,7 +80,6 @@ export default {
     ...mapActions("Orders", ["addOrder"]),
 
     setAddress(event) {
-      console.log(event);
       const { address, phone } = event;
       if (address) {
         this.address = address;

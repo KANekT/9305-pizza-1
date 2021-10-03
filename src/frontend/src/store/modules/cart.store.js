@@ -99,6 +99,20 @@ export default {
       );
     },
 
+    setAdditionalCount({ state, commit }, { id, quantity }) {
+      const clItem = cloneDeep(state.additionals.find((it) => it.id === id));
+      clItem.quantity = quantity;
+      commit(
+        UPDATE_ENTITY,
+        {
+          ...namespace,
+          entity: "additionals",
+          value: clItem,
+        },
+        { root: true }
+      );
+    },
+
     updateAdditionalCount({ state, commit }, { index, value }) {
       let clItem = cloneDeep(state.additionals[index]);
       clItem.quantity = clItem.quantity + value;

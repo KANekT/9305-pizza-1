@@ -95,10 +95,22 @@ export default {
   },
   methods: {
     ...mapActions("Orders", ["cloneOrder", "deleteOrder"]),
+    ...mapActions("Cart", ["addPizza", "setAdditionalCount"]),
 
     async clone(id) {
       const item = this.orders.find((it) => it.id === id);
-      await this.cloneOrder(item);
+      item.orderPizzas.map(async (it) => {
+        return await this.addPizza(it);
+      });
+
+      if (item.orderMisc) {
+        item.orderMisc.map(async (it) => {
+          return await this.setAdditionalCount({
+            id: it.miscId,
+            quantity: it.quantity,
+          });
+        });
+      }
     },
 
     async remove(id) {

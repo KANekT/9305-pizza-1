@@ -20,10 +20,10 @@ export default {
       required: true,
       default: () => ({}),
     },
-  },
-  computed: {
-    isDraggable() {
-      return this.transferData.quantity < 3;
+    isDraggable: {
+      type: Boolean,
+      required: true,
+      default: true,
     },
   },
   methods: {
