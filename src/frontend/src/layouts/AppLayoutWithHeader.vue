@@ -29,7 +29,9 @@
         >
       </div>
     </header>
-    <router-view></router-view>
+    <transition name="fade" mode="out-in" appear>
+      <router-view />
+    </transition>
   </div>
 </template>
 <script>
