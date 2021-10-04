@@ -49,3 +49,38 @@
 .fade-enter, .fade-leave-active {
   opacity: 0;
 }
+.slide-enter-active, .slide-leave-active {
+  -webkit-animation: slideIn 0.5s forwards;
+  animation: slideIn 0.5s forwards;
+}
+.slide-enter, .slide-leave-active {
+  opacity: 0;
+  -webkit-transform: translate(-30px, 0);
+  transform: translate(-30px, 0);
+}
+
+@-webkit-keyframes slideIn {
+  0% {
+    transform: translateX(900px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@-moz-keyframes slideIn {
+  0% {
+    transform: translateX(900px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes slideIn {
+  0% {
+    transform: translateX(900px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
