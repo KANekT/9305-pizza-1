@@ -18,11 +18,12 @@ export default {
     transferData: {
       type: Object,
       required: true,
+      default: () => ({}),
     },
-  },
-  computed: {
-    isDraggable() {
-      return this.transferData.count < 3;
+    isDraggable: {
+      type: Boolean,
+      required: true,
+      default: true,
     },
   },
   methods: {

@@ -36,8 +36,8 @@ export default {
   methods: {
     ...mapActions("Builder", ["changeDough"]),
 
-    async change(index) {
-      await this.changeDough(index);
+    change(index) {
+      this.changeDough(index);
     },
   },
 };

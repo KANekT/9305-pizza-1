@@ -35,8 +35,8 @@ export default {
   methods: {
     ...mapActions("Builder", ["changeSize"]),
 
-    async change(index) {
-      await this.changeSize(index);
+    change(index) {
+      this.changeSize(index);
     },
   },
 };

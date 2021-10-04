@@ -1,4 +1,3 @@
-import user from "@/static/user.json";
 import { capitalize } from "@/common/helpers";
 import { SET_ENTITY } from "@/store/mutations-types";
 
@@ -17,19 +16,20 @@ export default {
     },
   },
   actions: {
-    logIn({ commit }) {
-      commit(
-        SET_ENTITY,
-        {
-          ...namespace,
-          entity: "user",
-          value: user,
-        },
-        { root: true }
-      );
+    async logIn({ dispatch }, credentials) {
+      const data = await this.$api.auth.login(credentials);
+      this.$jwt.saveToken(data.token);
+      this.$api.auth.setAuthHeader();
+      dispatch("getMe");
     },
 
-    logOut({ commit }) {
+    async logOut({ commit }, sendRequest = true) {
+      if (sendRequest) {
+        await this.$api.auth.logout();
+      }
+      this.$jwt.destroyToken();
+      this.$api.auth.setAuthHeader();
+
       commit(
         SET_ENTITY,
         {
@@ -39,6 +39,20 @@ export default {
         },
         { root: true }
       );
+    },
+
+    async getMe({ commit, dispatch }) {
+      try {
+        const data = await this.$api.auth.getMe();
+        commit(
+          SET_ENTITY,
+          { module: "Auth", entity: "user", value: data },
+          { root: true }
+        );
+      } catch {
+        // Note: in case of not proper login, i.e. token is expired
+        dispatch("logOut", false);
+      }
     },
   },
 };

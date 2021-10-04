@@ -1,9 +1,12 @@
 export const SET_DATA = "SET_DATA";
 export const SET_ENTITY = "SET_ENTITY";
 export const ADD_ENTITY = "ADD_ENTITY";
+export const REPLACE_ENTITY = "REPLACE_ENTITY";
 export const UPDATE_ENTITY = "UPDATE_ENTITY";
 export const DELETE_ENTITY = "DELETE_ENTITY";
 export const UPDATE_DOUGHS = "UPDATE_DOUGHS";
 export const UPDATE_SIZES = "UPDATE_SIZES";
 export const UPDATE_SAUCES = "UPDATE_SAUCES";
 export const UPDATE_TITLE = "UPDATE_TITLE";
+export const ADD_NOTIFICATION = "ADD_NOTIFICATION";
+export const DELETE_NOTIFICATION = "DELETE_NOTIFICATION";
