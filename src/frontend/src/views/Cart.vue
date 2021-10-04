@@ -13,7 +13,7 @@
 
           <TheCartPizzas v-if="!isEmpty" />
           <TheCartAdditional v-if="!isEmpty" />
-          <TheCartOrderUser v-if="!isEmpty" />
+          <TheCartOrderUser v-if="!isEmpty" @setAddress="setAddress" />
         </div>
       </main>
       <section class="footer">
@@ -32,7 +32,9 @@
         </div>
 
         <div class="footer__submit">
-          <button type="submit" class="button">Оформить заказ</button>
+          <button type="submit" class="button" :disabled="!isValidForm">
+            Оформить заказ
+          </button>
         </div>
       </section>
     </form>
@@ -41,7 +43,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { cloneDeep } from "lodash";
+import { mapState, mapGetters, mapActions } from "vuex";
 //
 import TheCartPizzas from "@/modules/cart/components/TheCartPizzas.vue";
 import TheCartAdditional from "@/modules/cart/components/TheCartAdditional.vue";
@@ -49,26 +52,89 @@ import TheCartOrderUser from "@/modules/cart/components/TheCartOrderUser.vue";
 
 export default {
   name: "Cart",
+  data() {
+    return {
+      isValidForm: false,
+      address: {},
+      phone: "",
+    };
+  },
   components: {
     TheCartPizzas,
     TheCartAdditional,
     TheCartOrderUser,
   },
+  async created() {
+    if (this.isAuth) {
+      await this.getAddresses();
+    }
+  },
   computed: {
     ...mapGetters("Cart", ["isEmpty", "price"]),
     ...mapGetters("Auth", ["isAuth"]),
+    ...mapState("Auth", ["user"]),
+    ...mapState("Cart", ["pizzas", "additionals"]),
   },
   methods: {
     ...mapActions("Builder", ["clearPizza"]),
-    ...mapActions("Cart", ["clear"]),
+    ...mapActions("Address", ["getAddresses"]),
+    ...mapActions("Orders", ["addOrder"]),
+
+    setAddress(event) {
+      const { address, phone } = event;
+      if (address) {
+        this.address = address;
+        this.phone = phone;
+        this.isValidForm = true;
+      } else {
+        this.address = {};
+        this.phone = "";
+        this.isValidForm = false;
+      }
+    },
 
     async onSubmit() {
+      const order = {
+        userId: this.isAuth ? this.user.id : null,
+        phone: this.phone,
+
+        pizzas: this.pizzas.map((it) => {
+          return {
+            name: it.name,
+            sauceId: it.sauceId,
+            doughId: it.doughId,
+            sizeId: it.sizeId,
+            quantity: it.quantity,
+            ingredients: it.ingredients.map((ing) => {
+              return {
+                ingredientId: ing.ingredientId,
+                quantity: ing.quantity,
+              };
+            }),
+          };
+        }),
+        misc: this.additionals
+          .filter((it) => it.quantity > 0)
+          .map((it) => {
+            return {
+              miscId: it.id,
+              quantity: it.quantity,
+            };
+          }),
+      };
+
+      if (this.address.id >= 0) {
+        order.address = cloneDeep(this.address);
+        order.address.id = +order.address.id > 0 ? +order.address.id : null;
+      }
+
+      await this.addOrder(order);
       await this.$router.push("/order_placed");
     },
 
-    async toBuilder() {
-      await this.clearPizza();
-      await this.$router.push("/");
+    toBuilder() {
+      this.clearPizza();
+      this.$router.push("/");
     },
   },
 };

@@ -1,28 +1,56 @@
+import { uniqueId } from "lodash";
 import Vue from "vue";
 import Vuex from "vuex";
+import VuexPlugins from "@/plugins/vuexPlugins";
 import modules from "@/store/modules";
 import {
+  ADD_NOTIFICATION,
+  DELETE_NOTIFICATION,
   SET_DATA,
   SET_ENTITY,
   ADD_ENTITY,
+  REPLACE_ENTITY,
   UPDATE_ENTITY,
   DELETE_ENTITY,
 } from "@/store/mutations-types";
+import { MESSAGE_LIVE_TIME } from "@/common/constants";
 
 Vue.use(Vuex);
 
-const initState = () => ({});
+const initState = () => ({
+  notifications: [],
+});
 
 const state = initState();
 
 const actions = {
   async init({ dispatch }) {
     dispatch("Builder/getAllData");
-    dispatch("Cart/getAdditionals");
+    dispatch("Cart/getMiscs");
+    dispatch("Auth/getMe");
+  },
+  async createNotification({ commit }, { ...notification }) {
+    const uniqueNotification = {
+      ...notification,
+      id: uniqueId(),
+    };
+    commit(ADD_NOTIFICATION, uniqueNotification);
+    setTimeout(
+      () => commit(DELETE_NOTIFICATION, uniqueNotification.id),
+      MESSAGE_LIVE_TIME
+    );
   },
 };
 
 const mutations = {
+  [ADD_NOTIFICATION](state, notification) {
+    state.notifications = [...state.notifications, notification];
+  },
+  [DELETE_NOTIFICATION](state, id) {
+    state.notifications = state.notifications.filter(
+      (notification) => notification.id !== id
+    );
+  },
   [SET_DATA](state, { module, value }) {
     module ? (state[module] = value) : (state = value);
   },
@@ -34,6 +62,13 @@ const mutations = {
       state[module][entity] = [...state[module][entity], value];
     } else {
       state[entity] = [...state[entity], value];
+    }
+  },
+  [REPLACE_ENTITY](state, { module, entity, index, value }) {
+    if (module) {
+      state[module][entity].splice(index, 1, value);
+    } else {
+      state[entity].splice(index, 1, value);
     }
   },
   [UPDATE_ENTITY](state, { module, entity, value }) {
@@ -71,4 +106,5 @@ export default new Vuex.Store({
   actions,
   mutations,
   modules,
+  plugins: [VuexPlugins],
 });

@@ -26,11 +26,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions("Cart", ["clear"]),
+    ...mapActions("Cart", ["clearData"]),
 
-    async order() {
-      await this.clear();
-      await this.$router.push(this.getUrl);
+    order() {
+      this.clearData();
+      this.$router.push(this.getUrl);
     },
   },
 };

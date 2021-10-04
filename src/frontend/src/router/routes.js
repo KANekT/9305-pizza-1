@@ -1,4 +1,5 @@
 import { getView } from "@/common/helpers.js";
+import { auth, isLoggedIn } from "@/middlewares";
 
 export default [
   {
@@ -8,8 +9,11 @@ export default [
     children: [
       {
         path: "/login",
-        name: "Login",
+        name: "LoginIndex",
         component: getView("Login"),
+        meta: {
+          middlewares: [isLoggedIn],
+        },
       },
     ],
   },
@@ -17,7 +21,7 @@ export default [
     path: "/auth",
     name: "Login",
     component: getView("Login"),
-    meta: { layout: "AppLayoutWithoutHeader" },
+    meta: { middlewares: [isLoggedIn], layout: "AppLayoutWithoutHeader" },
   },
   {
     path: "/cart",
@@ -35,10 +39,12 @@ export default [
     path: "/orders",
     name: "Orders",
     component: getView("Orders"),
+    meta: { middlewares: [auth], layout: "AppLayoutCabinet" },
   },
   {
     path: "/profile",
     name: "Profile",
     component: getView("Profile"),
+    meta: { middlewares: [auth], layout: "AppLayoutCabinet" },
   },
 ];

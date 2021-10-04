@@ -29,14 +29,41 @@
         >
       </div>
     </header>
-    <router-view></router-view>
+    <main class="layout">
+      <div class="layout__sidebar sidebar">
+        <router-link to="/" class="logo layout__logo">
+          <img
+            src="@/assets/img/logo.svg"
+            alt="V!U!E! Pizza logo"
+            width="90"
+            height="40"
+          />
+        </router-link>
+
+        <router-link
+          class="layout__link"
+          to="/orders"
+          active-class="layout__link--active"
+        >
+          История заказов</router-link
+        >
+        <router-link
+          class="layout__link"
+          to="/profile"
+          active-class="layout__link--active"
+          >Мои данные</router-link
+        >
+      </div>
+
+      <router-view></router-view>
+    </main>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
-  name: "AppLayoutWithHeader",
+  name: "AppLayoutCabinet",
   computed: {
     ...mapState("Auth", ["user"]),
     ...mapGetters("Auth", ["isAuth"]),

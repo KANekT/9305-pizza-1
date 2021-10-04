@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 import AppDrop from "@/common/components/AppDrop.vue";
 
@@ -22,13 +22,53 @@ export default {
   name: "TheBuilderPizzaView",
   components: { AppDrop },
   computed: {
-    ...mapGetters("Builder", ["foundation", "fillings"]),
+    ...mapState("Builder", ["doughs", "sauces"]),
+    ...mapGetters("Builder", ["isFillState", "ingredientsInPizza"]),
+
+    foundation() {
+      if (this.isFillState) {
+        const cssDough =
+          this.doughs.find((it) => it.checked).value === "light"
+            ? "small"
+            : "big";
+        const cssSauce =
+          this.sauces.find((it) => it.checked).id === 1 ? "tomato" : "creamy";
+
+        return `pizza--foundation--${cssDough}-${cssSauce}`;
+      } else return "pizza--foundation--small-tomato";
+    },
+
+    fillings() {
+      if (this.isFillState) {
+        return this.ingredientsInPizza.map((it) => {
+          const css = "pizza__filling--" + it.value;
+          switch (it.quantity) {
+            case 2:
+              return {
+                id: it.id * 10 + 2,
+                css: css + " pizza__filling--second",
+              };
+            case 3:
+              return {
+                id: it.id * 10 + 3,
+                css: css + " pizza__filling--third",
+              };
+            default:
+              return {
+                id: it.id * 10 + 1,
+                css: css,
+              };
+          }
+        });
+      }
+      return [];
+    },
   },
   methods: {
     ...mapActions("Builder", ["addIngredient"]),
 
-    async add(ingredient) {
-      await this.addIngredient(ingredient);
+    add(ingredient) {
+      this.addIngredient(ingredient);
     },
   },
 };

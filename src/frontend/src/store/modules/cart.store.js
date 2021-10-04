@@ -1,5 +1,3 @@
-import misc from "@/static/misc.json";
-
 import { capitalize } from "@/common/helpers";
 import { cloneDeep } from "lodash";
 import {
@@ -17,6 +15,7 @@ export default {
   namespaced: true,
   state: {
     pizzas: [],
+    miscs: [],
     additionals: [],
   },
   getters: {
@@ -28,8 +27,11 @@ export default {
     },
     price(state, getters) {
       if (getters.isNotEmpty) {
-        const pizzas = state.pizzas.map((it) => it.count * it.price);
-        const additionals = state.additionals.map((it) => it.count * it.price);
+        const pizzas = state.pizzas.map((it) => it.quantity * it.price);
+        const additionals = state.additionals.map(
+          (it) => it.quantity * it.price
+        );
+
         return (
           pizzas.reduce((total, i) => total + i) +
           additionals.reduce((total, i) => total + i)
@@ -40,11 +42,11 @@ export default {
   },
 
   actions: {
-    getAdditionals({ commit }) {
-      // TODO: Add api call
+    async getMiscs({ commit }) {
+      const misc = await this.$api.misc.query();
       const data = misc.map((it) => {
         let clItem = cloneDeep(it);
-        clItem.count = 0;
+        clItem.quantity = 0;
         clItem.src = require("./../../assets/img/" +
           clItem.image.substring(12));
         return clItem;
@@ -53,14 +55,30 @@ export default {
         SET_ENTITY,
         {
           ...namespace,
-          entity: "additionals",
+          entity: "miscs",
           value: data,
         },
         { root: true }
       );
     },
 
-    addPizza({ commit }, pizza) {
+    addPizza({ state, commit }, pizza) {
+      if (state.pizzas.length === 0 || state.additionals.length === 0) {
+        let clItems = cloneDeep(state.miscs);
+        clItems.map((it) => {
+          it.quantity = 0;
+        });
+        commit(
+          SET_ENTITY,
+          {
+            ...namespace,
+            entity: "additionals",
+            value: clItems,
+          },
+          { root: true }
+        );
+      }
+
       const item = cloneDeep(pizza);
       commit(
         UPDATE_ENTITY,
@@ -75,7 +93,7 @@ export default {
 
     updatePizzaCount({ state, commit }, { index, value }) {
       let clItem = cloneDeep(state.pizzas[index]);
-      clItem.count = clItem.count + value;
+      clItem.quantity = clItem.quantity + value;
       commit(
         UPDATE_ENTITY,
         {
@@ -99,9 +117,9 @@ export default {
       );
     },
 
-    updateAdditionalCount({ state, commit }, { index, value }) {
-      let clItem = cloneDeep(state.additionals[index]);
-      clItem.count = clItem.count + value;
+    setAdditionalCount({ state, commit }, { id, quantity }) {
+      const clItem = cloneDeep(state.additionals.find((it) => it.id === id));
+      clItem.quantity = quantity;
       commit(
         UPDATE_ENTITY,
         {
@@ -113,13 +131,28 @@ export default {
       );
     },
 
-    clearData({ commit }) {
+    updateAdditionalCount({ state, commit }, { index, value }) {
+      let clItem = cloneDeep(state.additionals[index]);
+      clItem.quantity = clItem.quantity + value;
+      commit(
+        UPDATE_ENTITY,
+        {
+          ...namespace,
+          entity: "additionals",
+          value: clItem,
+        },
+        { root: true }
+      );
+    },
+
+    clearData({ state, commit }) {
       commit(
         SET_DATA,
         {
           ...namespace,
           value: {
             pizzas: [],
+            miscs: state.miscs,
             additionals: [],
           },
         },
