@@ -7,7 +7,6 @@ import {
 import { cloneDeep } from "lodash";
 import {
   SET_DATA,
-  SET_ENTITY,
   UPDATE_DOUGHS,
   UPDATE_SIZES,
   UPDATE_SAUCES,
@@ -152,6 +151,7 @@ export default {
       const data = {
         id: createID(),
         title: "",
+        quantity: 1,
         sizes: setCheckedByIndex(state.sizes, 0),
         doughs: setCheckedByIndex(state.doughs, 0),
         sauces: setCheckedByIndex(state.sauces, 0),
@@ -170,22 +170,12 @@ export default {
         },
         { root: true }
       );
-
-      commit(
-        SET_ENTITY,
-        {
-          ...namespace,
-          entity: "quantity",
-          value: 1,
-        },
-        { root: true }
-      );
     },
 
     editPizza({ commit, state }, pizza) {
       const data = {
         id: pizza.id,
-        quantity: state.quantity,
+        quantity: pizza.quantity,
         title: pizza.name,
         sizes: setCheckedById(state.sizes, pizza.sizeId),
         doughs: setCheckedById(state.doughs, pizza.doughId),
@@ -200,16 +190,6 @@ export default {
           return clItem;
         }),
       };
-
-      commit(
-        SET_ENTITY,
-        {
-          ...namespace,
-          entity: "quantity",
-          value: pizza.quantity,
-        },
-        { root: true }
-      );
 
       commit(
         SET_DATA,
@@ -233,7 +213,7 @@ export default {
       commit(UPDATE_SAUCES, setCheckedByIndex(state.sauces, index));
     },
 
-    pizza({ state, getters }) {
+    getPizza({ state, getters }) {
       const sauce = state.sauces.find((it) => it.checked);
       const dough = state.doughs.find((it) => it.checked);
       const size = state.sizes.find((it) => it.checked);

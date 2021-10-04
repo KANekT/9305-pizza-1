@@ -77,24 +77,32 @@ export default {
     },
 
     getFilling() {
-      const ids = this.product?.ingredients.map((it) => it.ingredientId) ?? [];
-      return this.ingredients
-        .filter((it) => ids.includes(it.id))
-        .map((it) => it.name.toLowerCase())
-        .join(", ");
+      if (this.product) {
+        const ids = this.product.ingredients.map((it) => it.ingredientId) ?? [];
+        return this.ingredients
+          .filter((it) => ids.includes(it.id))
+          .map((it) => it.name.toLowerCase())
+          .join(", ");
+      } else {
+        return "";
+      }
     },
 
     getPrice() {
-      const total = getPizzaPrice(
-        this.product,
-        this.sizes,
-        this.doughs,
-        this.sauces,
-        this.ingredients
-      );
-      return this.product.quantity > 1
-        ? `${this.product.quantity} X ${total}`
-        : `${total}`;
+      if (this.product) {
+        const total = getPizzaPrice(
+          this.product,
+          this.sizes,
+          this.doughs,
+          this.sauces,
+          this.ingredients
+        );
+        return this.product.quantity > 1
+          ? `${this.product.quantity} X ${total}`
+          : `${total}`;
+      } else {
+        return 0;
+      }
     },
   },
 };

@@ -80,7 +80,6 @@ export default {
       }
 
       const item = cloneDeep(pizza);
-      item.quantity = 1;
       commit(
         UPDATE_ENTITY,
         {
