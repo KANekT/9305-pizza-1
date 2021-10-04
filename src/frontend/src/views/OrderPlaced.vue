@@ -1,5 +1,5 @@
 <template>
-  <transition name="popup" appear
+  <transition name="fade" appear
     ><div class="popup" v-if="isShow">
       <a class="close" @click.prevent.self="order">
         <span class="visually-hidden">Закрыть попап</span>
@@ -45,18 +45,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.popup-enter-active,
-.popup-leave-active {
-  transition: 0.5s;
-}
-.popup-enter {
-  transform: translate(-50%, -50%) scale(0.8);
-  opacity: 0;
-}
-.popup-leave-to {
-  transform: translate(-50%, -50%) scale(1.2);
-  opacity: 0;
-}
-</style>
