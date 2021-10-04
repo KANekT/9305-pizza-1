@@ -21,7 +21,7 @@ export default {
     ...mapActions("Cart", ["addPizza"]),
 
     async cookPizza() {
-      await this.addPizza(await this.pizza());
+      this.addPizza(this.pizza());
       await this.getAllData();
       await this.$router.push("/cart");
     },

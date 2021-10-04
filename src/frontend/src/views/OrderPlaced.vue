@@ -28,9 +28,9 @@ export default {
   methods: {
     ...mapActions("Cart", ["clearData"]),
 
-    async order() {
-      await this.clearData();
-      await this.$router.push(this.getUrl);
+    order() {
+      this.clearData();
+      this.$router.push(this.getUrl);
     },
   },
 };

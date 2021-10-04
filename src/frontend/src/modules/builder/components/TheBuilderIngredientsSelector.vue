@@ -85,12 +85,12 @@ export default {
   methods: {
     ...mapActions("Builder", ["changeSauce", "updateIngredient"]),
 
-    async update(index, value) {
-      await this.updateIngredient({ index, value });
+    update(index, value) {
+      this.updateIngredient({ index, value });
     },
 
-    async change(index) {
-      await this.changeSauce(index);
+    change(index) {
+      this.changeSauce(index);
     },
   },
 };

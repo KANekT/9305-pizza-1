@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { cloneDeep } from "lodash";
 import { mapState, mapGetters, mapActions } from "vuex";
 //
 import TheCartPizzas from "@/modules/cart/components/TheCartPizzas.vue";
@@ -123,17 +124,17 @@ export default {
       };
 
       if (this.address.id >= 0) {
-        order.address = this.address;
-        this.address.id > 0 ? this.address.id : null;
+        order.address = cloneDeep(this.address);
+        order.address.id = +order.address.id > 0 ? +order.address.id : null;
       }
 
       await this.addOrder(order);
       await this.$router.push("/order_placed");
     },
 
-    async toBuilder() {
-      await this.clearPizza();
-      await this.$router.push("/");
+    toBuilder() {
+      this.clearPizza();
+      this.$router.push("/");
     },
   },
 };

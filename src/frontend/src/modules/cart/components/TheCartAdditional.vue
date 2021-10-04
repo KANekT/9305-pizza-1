@@ -63,8 +63,8 @@ export default {
   methods: {
     ...mapActions("Cart", ["updateAdditionalCount"]),
 
-    async update(index, value) {
-      await this.updateAdditionalCount({ index, value });
+    update(index, value) {
+      this.updateAdditionalCount({ index, value });
     },
   },
 };

@@ -62,20 +62,20 @@ export default {
     ...mapActions("Builder", ["editPizza"]),
     ...mapActions("Cart", ["updatePizzaCount", "deletePizza"]),
 
-    async update(index, value) {
-      await this.updatePizzaCount({ index, value });
+    update(index, value) {
+      this.updatePizzaCount({ index, value });
     },
 
-    async edit() {
-      await this.editPizza(this.pizza);
-      await this.$router.push("/");
+    edit() {
+      this.editPizza(this.pizza);
+      this.$router.push("/");
     },
 
-    async remove() {
+    remove() {
       if (
         confirm(`Вы действительно хотите удалить пиццу "${this.pizza.name}"?`)
       ) {
-        await this.deletePizza(this.pizza.id);
+        this.deletePizza(this.pizza.id);
       }
     },
   },

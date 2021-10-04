@@ -63,7 +63,7 @@ export default {
   computed: {
     ...mapState("Orders", ["orders"]),
     ...mapState("Builder", ["sizes", "doughs", "sauces", "ingredients"]),
-    ...mapState("Cart", ["additionals"]),
+    ...mapState("Cart", ["miscs"]),
 
     getTotal() {
       const pizzas = this.order.orderPizzas.map(
@@ -78,9 +78,8 @@ export default {
           )
       );
       if (this.order.orderMisc) {
-        const miscs = this.additionals;
         const misc = this.order.orderMisc.map((it) => {
-          const price = miscs.find((m) => m.id === it.miscId)?.price ?? 0;
+          const price = this.miscs.find((m) => m.id === it.miscId)?.price ?? 0;
           return it.quantity * price;
         });
 
@@ -97,20 +96,29 @@ export default {
     ...mapActions("Orders", ["cloneOrder", "deleteOrder"]),
     ...mapActions("Cart", ["addPizza", "setAdditionalCount"]),
 
-    async clone(id) {
+    clone(id) {
       const item = this.orders.find((it) => it.id === id);
-      item.orderPizzas.map(async (it) => {
-        return await this.addPizza(it);
+      item.orderPizzas.map((it) => {
+        it.price = getPizzaPrice(
+          it,
+          this.sizes,
+          this.doughs,
+          this.sauces,
+          this.ingredients
+        );
+        return this.addPizza(it);
       });
 
       if (item.orderMisc) {
-        item.orderMisc.map(async (it) => {
-          return await this.setAdditionalCount({
+        item.orderMisc.map((it) => {
+          return this.setAdditionalCount({
             id: it.miscId,
             quantity: it.quantity,
           });
         });
       }
+
+      this.$router.push("/cart");
     },
 
     async remove(id) {

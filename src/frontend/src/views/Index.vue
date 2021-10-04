@@ -51,8 +51,8 @@ export default {
   methods: {
     ...mapActions("Builder", ["updateTitle"]),
 
-    async change(title) {
-      await this.updateTitle(title);
+    change(title) {
+      this.updateTitle(title);
     },
 
     async onSubmit() {},

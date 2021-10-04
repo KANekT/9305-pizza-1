@@ -1,10 +1,6 @@
 import { capitalize } from "@/common/helpers";
 import { cloneDeep } from "lodash";
-import {
-  SET_ENTITY,
-  UPDATE_ENTITY,
-  DELETE_ENTITY,
-} from "@/store/mutations-types";
+import { SET_ENTITY, DELETE_ENTITY } from "@/store/mutations-types";
 
 const entity = "orders";
 const module = capitalize(entity);
@@ -50,19 +46,6 @@ export default {
           { root: true }
         );
       }
-    },
-
-    async editOrder({ commit }, order) {
-      const item = cloneDeep(order);
-      commit(
-        UPDATE_ENTITY,
-        {
-          ...namespace,
-          entity: "orders",
-          value: item,
-        },
-        { root: true }
-      );
     },
 
     async deleteOrder({ commit }, id) {

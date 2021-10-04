@@ -26,7 +26,7 @@ const state = initState();
 const actions = {
   async init({ dispatch }) {
     dispatch("Builder/getAllData");
-    dispatch("Cart/getAdditionals");
+    dispatch("Cart/getMiscs");
     dispatch("Auth/getMe");
   },
   async createNotification({ commit }, { ...notification }) {

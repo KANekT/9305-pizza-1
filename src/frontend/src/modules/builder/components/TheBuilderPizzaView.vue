@@ -67,8 +67,8 @@ export default {
   methods: {
     ...mapActions("Builder", ["addIngredient"]),
 
-    async add(ingredient) {
-      await this.addIngredient(ingredient);
+    add(ingredient) {
+      this.addIngredient(ingredient);
     },
   },
 };

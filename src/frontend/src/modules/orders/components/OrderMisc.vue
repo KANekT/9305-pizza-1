@@ -1,5 +1,5 @@
 <template>
-  <li>
+  <li v-if="additional">
     <img :src="additional.src" width="20" height="30" :alt="additional.name" />
     <p>
       <span>{{ additional.name }}</span>
@@ -21,10 +21,10 @@ export default {
     },
   },
   computed: {
-    ...mapState("Cart", ["additionals"]),
+    ...mapState("Cart", ["miscs"]),
 
     additional() {
-      return this.additionals.find((it) => it.id === this.misc.miscId);
+      return this.miscs.find((it) => it.id === this.misc.miscId);
     },
 
     getPrice() {
