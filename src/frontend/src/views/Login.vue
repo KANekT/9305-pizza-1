@@ -1,43 +1,49 @@
 <template>
-  <div class="sign-form">
-    <a href="#" class="close close--white" @click.prevent.self="$router.back()">
-      <span class="visually-hidden">Закрыть форму авторизации</span>
-    </a>
-    <div class="sign-form__title">
-      <h1 class="title title--small">Авторизуйтесь на сайте</h1>
-    </div>
-    <form @submit.prevent="onSubmit">
-      <div class="sign-form__input">
-        <label class="input">
-          <span>E-mail</span>
-          <AppInput
-            ref="email"
-            v-model="email"
-            type="email"
-            name="email"
-            class="input"
-            placeholder="E-mail"
-            :error-text="validations.email.error"
-          />
-        </label>
+  <transition name="fade" appear
+    ><div class="sign-form">
+      <a
+        href="#"
+        class="close close--white"
+        @click.prevent.self="$router.back()"
+      >
+        <span class="visually-hidden">Закрыть форму авторизации</span>
+      </a>
+      <div class="sign-form__title">
+        <h1 class="title title--small">Авторизуйтесь на сайте</h1>
       </div>
+      <form @submit.prevent="onSubmit">
+        <div class="sign-form__input">
+          <label class="input">
+            <span>E-mail</span>
+            <AppInput
+              ref="email"
+              v-model="email"
+              type="email"
+              name="email"
+              class="input"
+              placeholder="E-mail"
+              :error-text="validations.email.error"
+            />
+          </label>
+        </div>
 
-      <div class="sign-form__input">
-        <label class="input">
-          <span>Пароль</span>
-          <AppInput
-            v-model="password"
-            type="password"
-            name="password"
-            class="input"
-            placeholder="Пароль"
-            :error-text="validations.password.error"
-          />
-        </label>
-      </div>
-      <button type="submit" class="button">Авторизоваться</button>
-    </form>
-  </div>
+        <div class="sign-form__input">
+          <label class="input">
+            <span>Пароль</span>
+            <AppInput
+              v-model="password"
+              type="password"
+              name="password"
+              class="input"
+              placeholder="Пароль"
+              :error-text="validations.password.error"
+            />
+          </label>
+        </div>
+        <button type="submit" class="button">Авторизоваться</button>
+      </form>
+    </div></transition
+  >
 </template>
 
 <script>
