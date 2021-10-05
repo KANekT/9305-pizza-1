@@ -1,10 +1,6 @@
 <template>
   <div class="sign-form">
-    <a
-      href="#"
-      class="close close--white"
-      @click.prevent.self="$router.push('/')"
-    >
+    <a href="#" class="close close--white" @click.prevent.self="$router.back()">
       <span class="visually-hidden">Закрыть форму авторизации</span>
     </a>
     <div class="sign-form__title">
@@ -93,7 +89,7 @@ export default {
         email: this.email,
         password: this.password,
       });
-      await this.$router.push("/");
+      await this.$router.back();
     },
   },
 };

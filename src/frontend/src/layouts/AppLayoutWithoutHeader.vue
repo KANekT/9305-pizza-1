@@ -1,7 +1,7 @@
 <template>
-  <transition name="slide" mode="out-in" appear>
-    <router-view />
-  </transition>
+  <div>
+    <slot />
+  </div>
 </template>
 
 <script>
