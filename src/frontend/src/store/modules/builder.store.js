@@ -75,6 +75,7 @@ export default {
       const data = {
         id: createID(),
         title: "",
+        quantity: 1,
         sizes: allData[0].map((it, i) => {
           let clItem = cloneDeep(it);
           clItem.class = PIZZA_SIZES_ENUM[clItem.multiplier];
