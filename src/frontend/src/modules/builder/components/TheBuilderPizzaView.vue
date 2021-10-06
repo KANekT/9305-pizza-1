@@ -3,12 +3,14 @@
     <AppDrop @drop="add">
       <div class="pizza" :class="foundation">
         <div class="pizza__wrapper">
-          <div
-            class="pizza__filling"
-            :class="filling.css"
-            v-for="filling in fillings"
-            :key="filling.id"
-          ></div>
+          <transition-group name="ingredients">
+            <div
+              class="pizza__filling"
+              :class="filling.css"
+              v-for="filling in fillings"
+              :key="filling.id"
+            ></div
+          ></transition-group>
         </div></div
     ></AppDrop>
   </div>
@@ -73,3 +75,16 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+// Transitions
+.ingredients-enter-active,
+.ingredients-leave-active {
+  transition: all 0.5s ease;
+}
+.ingredients-enter,
+.ingredients-leave-to {
+  transform: scale(1.1);
+  opacity: 0;
+}
+</style>

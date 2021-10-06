@@ -15,7 +15,7 @@
         <router-link to="/cart">{{ price }} ₽</router-link>
       </div>
       <div class="header__user">
-        <router-link to="/login" class="header__login" v-if="!isAuth"
+        <router-link :to="linkToAuth" class="header__login" v-if="!isAuth"
           ><span>Войти</span></router-link
         >
         <router-link to="/profile" v-if="isAuth">
@@ -29,7 +29,7 @@
         >
       </div>
     </header>
-    <router-view></router-view>
+    <slot />
   </div>
 </template>
 <script>
@@ -41,6 +41,10 @@ export default {
     ...mapState("Auth", ["user"]),
     ...mapGetters("Auth", ["isAuth"]),
     ...mapGetters("Cart", ["price"]),
+
+    linkToAuth() {
+      return this.$route.name === "Index" ? "/login" : "/auth";
+    },
   },
   methods: {
     ...mapActions("Auth", ["logOut"]),

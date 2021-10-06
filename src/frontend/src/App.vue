@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <component :is="layout"> </component>
+    <component :is="layout">
+      <transition name="slide" mode="out-in" :appear="useAppear">
+        <router-view />
+      </transition>
+    </component>
   </div>
 </template>
 <script>
@@ -10,10 +14,6 @@ import { setAuth } from "@/common/helpers";
 export default {
   name: "App",
   created() {
-    window.onerror = function (msg, url, line, col, error) {
-      console.error(error);
-    };
-
     // Note: check auth
     if (this.$jwt.getToken()) {
       setAuth(this.$store);
@@ -25,6 +25,9 @@ export default {
     layout() {
       const layout = this.$route.meta.layout || DEFAULT_LAYOUT;
       return () => import(`@/layouts/${layout}.vue`);
+    },
+    useAppear() {
+      return this.$route.matched.length === 1;
     },
   },
 };

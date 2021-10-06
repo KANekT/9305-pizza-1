@@ -15,18 +15,13 @@
         <router-link to="/cart">{{ price }} ₽</router-link>
       </div>
       <div class="header__user">
-        <router-link to="/login" class="header__login" v-if="!isAuth"
-          ><span>Войти</span></router-link
-        >
-        <router-link to="/profile" v-if="isAuth">
+        <router-link to="/profile">
           <picture>
             <img :src="user.avatar" :alt="user.name" width="32" height="32" />
           </picture>
           <span>{{ user.name }}</span>
         </router-link>
-        <a class="header__logout" v-if="isAuth" @click="logOut"
-          ><span>Выйти</span></a
-        >
+        <a class="header__logout" @click="logOut"><span>Выйти</span></a>
       </div>
     </header>
     <main class="layout">
@@ -55,7 +50,7 @@
         >
       </div>
 
-      <router-view></router-view>
+      <slot />
     </main>
   </div>
 </template>
@@ -66,7 +61,6 @@ export default {
   name: "AppLayoutCabinet",
   computed: {
     ...mapState("Auth", ["user"]),
-    ...mapGetters("Auth", ["isAuth"]),
     ...mapGetters("Cart", ["price"]),
   },
   methods: {
